@@ -1,40 +1,81 @@
 *{
 	margin: 0;
 	padding: 0;
+	font-family: 'Gill Sans', 'PT Sans', sans-serif;
+	font-weight: 300;
 }
+
 html, body{
 	height: 100%;
 	width: 100%;
 }
-aside{
-	height: 100%;
-	width: 30%;
-	min-width: 200px;
-	background: #283751;
-	padding: 1%;
-	float: left;
-}
-
-aside .clock{
-	height: 200px;
-	width: 200px;
-	margin: 200px auto;
-}
-
 section{
 	float: left;
-	width: 68%;
+	width: 100%;
+	min-width: 800px;
 }
 
-section div.event{
-	height: 80px;
-	margin: 2%;
-	padding: 3%;
-	width: 90%;
-	background: rgba(15, 15, 188, 0.6);
-	color: #283751;
-	border-radius: 10px;
+
+section aside{
+	height: 100%;
+	width: 28%;
+	background: rgba(0, 0, 0, 0.8);
+	padding: 1%;
+	float: left;
+	position: absolute;
 }
-section div.event.on{
-	background: rgba(15, 15, 188, 0.8);
+section aside .clock{
+	width: 200px;
+	margin: auto;
+}
+
+
+section aside p.date, section aside p.clock{
+	width: 100%;
+	font-size: 32px;
+	color: white;
+	text-align: center;
+}
+
+
+
+
+section div.event{
+	position: relative;
+	height: 100px;
+	width: 100%;
+	margin: 10px 0;
+	padding: 10px 0;
+	color: white;
+	font-size: 24px;
+}
+
+
+section div.event div.left, section div.event div.right{
+	float: left;
+	height: 100px;
+	padding: 10px 1%;
+}
+section div.event div.left{
+	width: 28%;
+}
+section div.event div.right{
+	width: 68%;
+	background: rgba(0, 0, 0, 0.6);
+}
+
+
+section div.event div.right div.time{
+	opacity: 0.8;
+}
+section div.event div.right div.time span{
+	font-size: 20px;
+}
+section div.event div.right p.topic{
+	padding: 8px 0;
+	font-size: 28px;
+}
+section div.event div.right p.paticipants{
+	font-size: 20px;
+	opacity: 0.8;
 }
