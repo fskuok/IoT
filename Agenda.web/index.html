@@ -28,13 +28,22 @@
 
 			<div class="right">
 				<div class="time">
-					<span class="start">{{event.start}}</span>-<span class="end">{{event.end}}</span>
+					<span class="icon time"></span>
+					<span class="start">{{event.start}}</span>
+					-
+					<span class="end">{{event.end}}</span>
 					&nbsp&nbsp&nbsp&nbsp&nbsp
 					<span>{{calulateDuration(event.start, event.end)}}</span>
 					
 				</div>
-				<p class="topic"> {{event.topic}}</p>
-				<p class="paticipants"> {{event.paticipants}}</p>
+				<p class="topic">
+					<span class="icon {{event.type}}"></span> 
+					{{event.topic}}
+				</p>
+				<p class="paticipants">
+					<span class="icon participants"></span>
+					{{event.paticipants}}
+				</p>
 			</div>
 		</div>
 	</section>

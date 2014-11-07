@@ -2,7 +2,7 @@
 	margin: 0;
 	padding: 0;
 	font-family: 'Gill Sans', 'PT Sans', sans-serif;
-	font-weight: 300;
+	font-weight: 330;
 }
 
 html, body{
@@ -39,7 +39,7 @@ section aside p.date, section aside p.clock{
 
 
 
-
+/*Event*/
 section div.event{
 	position: relative;
 	height: 100px;
@@ -66,7 +66,7 @@ section div.event div.right{
 
 
 section div.event div.right div.time{
-	opacity: 0.8;
+	opacity: 0.7;
 }
 section div.event div.right div.time span{
 	font-size: 20px;
@@ -76,6 +76,33 @@ section div.event div.right p.topic{
 	font-size: 28px;
 }
 section div.event div.right p.paticipants{
+	opacity: 0.7;
 	font-size: 20px;
-	opacity: 0.8;
+}
+
+/*Icons*/
+section div.event div.right span.icon{
+	width: 20px;
+	height: 20px;
+	position: relative;
+	top: 2px;
+	display: inline-block;
+	background-repeat: no-repeat;
+}
+
+section div.event div.right span.icon.time{
+	background: url('../img/icon/clockwhite.png');
+	background-size: cover;
+}
+section div.event div.right span.icon.speech{
+	background: url('../img/icon/speakerwhite.png');
+	background-size: cover;
+}
+section div.event div.right span.icon.participants{
+	background: url('../img/icon/peoplewhite.png');
+	background-size: cover;
+}
+section div.event div.right span.icon.presentation{
+	background: url('../img/icon/projecterwhite.png');
+	background-size: cover;
 }
