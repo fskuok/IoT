@@ -1,0 +1,40 @@
+*{
+	margin: 0;
+	padding: 0;
+}
+html, body{
+	height: 100%;
+	width: 100%;
+}
+aside{
+	height: 100%;
+	width: 30%;
+	min-width: 200px;
+	background: #283751;
+	padding: 1%;
+	float: left;
+}
+
+aside .clock{
+	height: 200px;
+	width: 200px;
+	margin: 200px auto;
+}
+
+section{
+	float: left;
+	width: 68%;
+}
+
+section div.event{
+	height: 80px;
+	margin: 2%;
+	padding: 3%;
+	width: 90%;
+	background: rgba(15, 15, 188, 0.6);
+	color: #283751;
+	border-radius: 10px;
+}
+section div.event.on{
+	background: rgba(15, 15, 188, 0.8);
+}
