@@ -3,8 +3,8 @@
 	<script src="bower_components/angular/angular.js"></script>
 	<script src="bower_components/jquery/dist/jquery.js"></script>
 	<link rel="stylesheet" href="css/main.css">
-	<script src="data.js"></script>
 	<script src="js/main.js"></script>
+	<script src="js/tabletop.js"></script>
 	<script src="../../tf.js/tf.js"></script>
 	<link href='http://fonts.googleapis.com/css?family=PT+Sans' rel='stylesheet' type='text/css'>
 </head>
@@ -17,7 +17,9 @@
 			<p class="topic"></p>
 			<p class="date">{{date()}}</p>
 			<p class="clock">
-				<span class="hour"></span>&nbsp:&nbsp<span class="min"></span>&nbsp:&nbsp<span class="sec"></span>
+				<span class="hour">{{time.hour}}</span>&nbsp:&nbsp
+				<span class="min">{{time.min}}</span>&nbsp:&nbsp
+				<span class="sec">{{time.sec}}</span>
 			</p>
 		</aside>
 
@@ -30,7 +32,6 @@
 				<div class="time">
 					<span class="icon time"></span>
 					<span class="start">{{event.start}}</span>
-					-
 					<span class="end">{{event.end}}</span>
 					&nbsp&nbsp&nbsp&nbsp&nbsp
 					<span>{{calulateDuration(event.start, event.end)}}</span>
@@ -42,22 +43,15 @@
 				</p>
 				<p class="paticipants">
 					<span class="icon participants"></span>
-					{{event.paticipants}}
+					{{event.people}}
 				</p>
 			</div>
 		</div>
 	</section>
 
 	<script>
-		refresh();
-		function refresh(){
-			var time = new Date();
-			$('span.hour').html(time.getHours() < 10 ? '0' + time.getHours(): time.getHours());
-			$('span.min').html(time.getMinutes() < 10 ? '0' + time.getMinutes(): time.getMinutes());
-			$('span.sec').html(time.getSeconds() < 10 ? '0' + time.getSeconds(): time.getSeconds());
-		}
+		
 
-		setInterval(refresh, 1000);
 
 	</script>
 	
