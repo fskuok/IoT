@@ -13,27 +13,39 @@
 	
 
 	<section ng-controller="agendaCtrl">
+
 		<aside ng-controller="asideCtrl">
-			<p class="topic"></p>
-			<p class="date">{{date()}}</p>
-			<p class="clock">
-				<span class="hour">{{time.hour}}</span>&nbsp:&nbsp
-				<span class="min">{{time.min}}</span>&nbsp:&nbsp
-				<span class="sec">{{time.sec}}</span>
-			</p>
+			<div class="above">
+				<p class="topic"></p>
+				<p class="date">{{date()}}</p>
+				<p class="clock">
+					<span class="hour">{{time.hour}}</span> : 
+					<span class="min">{{time.min}}</span> : 
+					<span class="sec">{{time.sec}}</span>
+				</p>
+			</div>
+			
+			<div class="ongoing">
+				
+			</div>
+
+			<div class="below">
+				
+			</div>
 		</aside>
 
-		<div class="event" ng-repeat="event in events">
+		<div class="event {{isOn(event.start, event.end, $index)}}" ng-repeat="event in events">
+			<!--for future use in case-->
 			<div class="left">
 				
 			</div>
+
 
 			<div class="right">
 				<div class="time">
 					<span class="icon time"></span>
 					<span class="start">{{event.start}}</span>
 					<span class="end">{{event.end}}</span>
-					&nbsp&nbsp&nbsp&nbsp&nbsp
 					<span>{{calulateDuration(event.start, event.end)}}</span>
 					
 				</div>
@@ -48,12 +60,5 @@
 			</div>
 		</div>
 	</section>
-
-	<script>
-		
-
-
-	</script>
-	
 </body>
 </html>

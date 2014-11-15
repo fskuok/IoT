@@ -1,0 +1,149 @@
+@import "var.scss";
+
+*{
+	margin: 0;
+	padding: 0;
+	font-family: 'Gill Sans', 'PT Sans', sans-serif;
+	font-weight: 330;
+}
+
+html, body{
+	height: 100%;
+	width: 100%;
+    overflow: hidden;
+}
+
+section{
+	float: left;
+	width: 100%;
+	min-width: 800px;
+
+
+	aside{
+	height: 100%;
+	width: $aside-total-width;
+	background: $aside-bg;
+	position: fixed;
+	top: 0;
+	left: 0;
+
+      /************** Aside Above **************/
+      div.above{
+        width: 100%;
+        height: $above-now-height;
+
+        p.date, p.clock{
+          width: 100%;
+          font-size: 32px;
+          color: white;
+          text-align: center;
+          margin: auto;
+        }
+
+      }
+
+      /************** Aside Ongoing **************/
+
+      div.ongoing{
+        height: 100px;
+        width: 100%;
+
+        margin: 0;
+        padding: $event-padding-tb 0;
+        font-size: 24px;
+
+        background: $aside-ongoing-bg;
+      }
+
+	}
+
+  /************** Event **************/
+
+    div.event{
+      position: relative;
+      top: $above-now-height;
+
+      height: $event-height;
+      width: 100%;
+
+      margin: 0 0 $event-border-bottom;
+
+      color: white;
+      font-size: 24px;
+      opacity: 0.8;
+
+      transition: all ease-in-out 1s;
+
+      &.now{
+        opacity: 1;
+      }
+
+      div.left, div.right{
+        float: left;
+        height: $event-left-height;
+        padding: $event-padding-tb $event-left-padding-lr;
+      }
+
+      div.left{
+        width: $event-left-width;
+      }
+
+      /************** RIGHT **************/
+
+      div.right{
+        width: $event-right-width;
+        background: $right-bg;
+        color: $right-color;
+
+        div.time{
+          opacity: 0.7;
+
+          span{
+            font-size: 20px;
+          }
+        }
+
+        p.topic{
+          padding: 8px 0;
+          font-size: 28px;
+        }
+
+        p.paticipants{
+          opacity: 0.7;
+          font-size: 20px;
+        }
+
+        span.icon{
+          width: $icon-size;
+          height: $icon-size;
+
+          position: relative;
+          top: 2px;
+          display: inline-block;
+          background-repeat: no-repeat;
+
+          &.time{
+            @include icon(clockwhite);
+          }
+          &.speech{
+            @include icon(speakerwhite);
+          }
+          &.participants{
+            @include icon(peoplewhite);
+          }
+          &.presentation{
+            @include icon(projecterwhite);
+          }
+        }
+      }
+
+      &.now{
+        div.right{
+          background: $right-ongoing-bg;
+          color: $right-ongoing-color;
+
+        };
+      }
+
+    }
+}

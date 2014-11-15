@@ -1,0 +1,38 @@
+@mixin icon($filename){
+  background: url('../img/icon/' + $filename +'.png');
+  background-size: cover;
+}
+
+/* COLOR */
+$aside-bg: rgba(13, 70, 96, 0.80);
+$aside-ongoing-bg: #23b9ff;
+
+$right-bg: rgba(35, 184, 255, 0.13);
+$right-ongoing-bg: #23b9ff;
+
+$right-color: #23b9ff;
+$right-ongoing-color: white;
+
+
+$aside-total-width: 30%;
+$now-event-top: 200px;
+
+/* SIZE */
+$above-now-height: 200px;
+
+$event-total-height: 130px;
+$event-border-bottom: 10px;
+$event-height: $event-total-height - $event-border-bottom;
+
+$event-padding-tb: 10px;
+$event-left-height: $event-height - 2*$event-padding-tb;
+$event-left-total-width: $aside-total-width;
+$event-left-padding-lr: 1%;
+$event-left-width: $event-left-total-width - 2 * $event-left-padding-lr;
+
+$event-right-total-width: 100% - $event-left-total-width;
+$event-right-padding-lr: $event-left-padding-lr;
+$event-right-width: $event-right-total-width - 2 * $event-right-padding-lr;
+$event-right-height: $event-left-height;
+
+$icon-size: 20px;
