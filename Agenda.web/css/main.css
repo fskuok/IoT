@@ -1,0 +1,128 @@
+/* COLOR */
+/* FONT COLOR */
+/* SIZE */
+* {
+  margin: 0;
+  padding: 0;
+  font-family: 'Gill Sans', 'PT Sans', sans-serif;
+  font-weight: 330; }
+
+html, body {
+  height: 100%;
+  width: 100%;
+  overflow: hidden; }
+
+section {
+  float: left;
+  width: 100%;
+  height: 100%;
+  /************** Event **************/ }
+  section aside {
+    height: 100%;
+    width: 30%;
+    background: #1f64ba;
+    position: fixed;
+    top: 0;
+    left: 0;
+    /************** Aside Above **************/
+    /************** Aside Ongoing **************/ }
+    section aside div.above {
+      width: 100%;
+      height: 200px; }
+      section aside div.above p.date, section aside div.above p.clock {
+        width: 100%;
+        float: left;
+        /* avoid content overflow*/
+        font-size: 32px;
+        color: white;
+        text-align: center;
+        margin: 20px 0; }
+      section aside div.above p.clock span {
+        background: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0) 49%, rgba(255, 255, 255, 0.2) 51%, rgba(255, 255, 255, 0.2));
+        border-radius: 4px;
+        padding: 2px 6px;
+        border: 1px solid white; }
+    section aside div.ongoing {
+      height: 100px;
+      width: 100%;
+      margin: 0;
+      padding: 10px 0;
+      font-size: 24px;
+      text-align: center;
+      color: white;
+      background: #ff523c; }
+      section aside div.ongoing div.remaining span {
+        background: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0) 49%, rgba(255, 255, 255, 0.2) 51%, rgba(255, 255, 255, 0.2));
+        border-radius: 4px;
+        padding: 2px 6px;
+        border: 1px solid white; }
+  section div.event {
+    position: relative;
+    top: 200px;
+    height: 120px;
+    width: 100%;
+    margin: 0 0 10px;
+    color: white;
+    font-size: 24px;
+    opacity: 0.8;
+    transition: all ease-in-out 1s;
+    /************** RIGHT **************/ }
+    section div.event.now {
+      opacity: 1; }
+    section div.event div.left, section div.event div.right {
+      float: left;
+      height: 100px;
+      padding: 10px 1%; }
+    section div.event div.left {
+      width: 28%;
+      opacity: 0; }
+    section div.event div.right {
+      width: 68%;
+      background: white;
+      color: #23b9ff; }
+      section div.event div.right div.time {
+        opacity: 0.7; }
+        section div.event div.right div.time span {
+          font-size: 20px; }
+      section div.event div.right p.topic {
+        padding: 8px 0;
+        font-size: 28px; }
+      section div.event div.right p.people {
+        opacity: 0.7;
+        font-size: 20px; }
+      section div.event div.right span.icon {
+        width: 20px;
+        height: 20px;
+        position: relative;
+        top: 2px;
+        display: inline-block;
+        background-repeat: no-repeat; }
+        section div.event div.right span.icon.time {
+          background: url("../img/icon/clockwhite.png");
+          background-size: cover; }
+        section div.event div.right span.icon.speech {
+          background: url("../img/icon/speakerwhite.png");
+          background-size: cover; }
+        section div.event div.right span.icon.people {
+          background: url("../img/icon/peoplewhite.png");
+          background-size: cover; }
+        section div.event div.right span.icon.presentation {
+          background: url("../img/icon/projecterwhite.png");
+          background-size: cover; }
+    section div.event.now div.left {
+      opacity: 1; }
+    section div.event.now div.right {
+      background: #23b9ff;
+      color: white; }
+  section .panel {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 101;
+    padding: 20%;
+    height: 60%;
+    width: 60%;
+    text-align: center;
+    font-size: 64px;
+    background: black;
+    color: white; }

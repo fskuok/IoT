@@ -1,20 +1,22 @@
 <html>
 <head>
+    <!--stylesheets-->
+    <link rel="stylesheet" href="css/main.css">
+
+    <!--javaScripts-->
 	<script src="bower_components/angular/angular.js"></script>
 	<script src="bower_components/jquery/dist/jquery.js"></script>
-	<link rel="stylesheet" href="css/main.css">
 	<script src="js/main.js"></script>
 	<script src="js/tabletop.js"></script>
 	<script src="../../tf.js/tf.js"></script>
+
+    <!--fonts-->
 	<link href='http://fonts.googleapis.com/css?family=PT+Sans' rel='stylesheet' type='text/css'>
 </head>
 <body ng-app="agendaApp">
-	
-	
-
 	<section ng-controller="agendaCtrl">
 
-		<aside ng-controller="asideCtrl">
+		<aside>
 			<div class="above">
 				<p class="topic"></p>
 				<p class="date">{{date()}}</p>
@@ -26,7 +28,10 @@
 			</div>
 			
 			<div class="ongoing">
-				
+                <div class="remaining">
+                    <span class="hour">{{remainingHours}}</span> :
+                    <span class="min">{{remainingMins}}</span>
+                </div>
 			</div>
 
 			<div class="below">
@@ -37,7 +42,7 @@
 		<div class="event {{isOn(event.start, event.end, $index)}}" ng-repeat="event in events">
 			<!--for future use in case-->
 			<div class="left">
-				
+
 			</div>
 
 
@@ -46,19 +51,23 @@
 					<span class="icon time"></span>
 					<span class="start">{{event.start}}</span>
 					<span class="end">{{event.end}}</span>
-					<span>{{calulateDuration(event.start, event.end)}}</span>
+					<span>{{duration(event.start, event.end).join('H') + 'M'}}</span>
 					
 				</div>
 				<p class="topic">
 					<span class="icon {{event.type}}"></span> 
 					{{event.topic}}
 				</p>
-				<p class="paticipants">
-					<span class="icon participants"></span>
+				<p class="people">
+					<span class="icon people"></span>
 					{{event.people}}
 				</p>
 			</div>
 		</div>
+
+        <div class="panel">
+            {{panelMessage}}
+        </div>
 	</section>
 </body>
 </html>

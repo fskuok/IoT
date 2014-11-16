@@ -3,14 +3,23 @@
   background-size: cover;
 }
 
-/* COLOR */
-$aside-bg: rgba(13, 70, 96, 0.80);
-$aside-ongoing-bg: #23b9ff;
+@mixin clock($a){
+  background: linear-gradient(to bottom, rgba(white,0), rgba(white,0) 49%, rgba(white, 0.2) 51%, rgba(white, 0.2));
+  border-radius: 2*$a;
+  padding: $a 3*$a;
+  border: 1px solid white;
+}
 
-$right-bg: rgba(35, 184, 255, 0.13);
+
+/* COLOR */
+$aside-bg: #1f64ba;
+$aside-ongoing-bg: #ff523c;
+
+$right-not-ongoing-bg: #ffffff;
 $right-ongoing-bg: #23b9ff;
 
-$right-color: #23b9ff;
+/* FONT COLOR */
+$right-not-ongoing-color: #23b9ff;
 $right-ongoing-color: white;
 
 
