@@ -156,6 +156,7 @@ var AGENDA_GOOGLE_SPREADSHEET_KEY = "1rGsUNIk_zhfuNUMglR-4My7vPqku-sZg8JBYkKp9Qf
                         var nowTime = new Date(),
                             remainingTime;
 
+                        //refresh the clock
                         $scope.time.hour =
                                 nowTime.getHours() < 10 ? '0' + nowTime.getHours(): nowTime.getHours();
 
@@ -165,10 +166,11 @@ var AGENDA_GOOGLE_SPREADSHEET_KEY = "1rGsUNIk_zhfuNUMglR-4My7vPqku-sZg8JBYkKp9Qf
                         $scope.time.sec =
                                 nowTime.getSeconds() < 10 ? '0' + nowTime.getSeconds(): nowTime.getSeconds();
 
+                        //refresh the remaining time of current event
                         if($scope.nowEvent.endDate){
                             remainingTime = time.duration(nowTime, $scope.nowEvent.endDate);
-                            $scope.remainingHours = remainingTime[0];
-                            $scope.remainingMins = remainingTime[1];
+                            $scope.remainingHours = remainingTime[0] < 10 ? '0' + remainingTime[0] : remainingTime[0];
+                            $scope.remainingMins = remainingTime[1] < 10 ? '0' + remainingTime[1] : remainingTime[1];
                         }
 
                     }
