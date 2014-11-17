@@ -11,6 +11,8 @@
 
 ************************/
 /* SIZE */
+/* ICON SIZE */
+/* FONT SIZE*/
 * {
   margin: 0;
   padding: 0;
@@ -30,7 +32,7 @@ section {
   section aside {
     height: 100%;
     width: 30%;
-    background: #1f64ba;
+    background: #23b9ff;
     position: fixed;
     top: 0;
     left: 0;
@@ -60,7 +62,7 @@ section {
       font-size: 24px;
       text-align: center;
       color: white;
-      background: #ff523c; }
+      background: #ff6450; }
       section aside div.ongoing div.remaining span {
         background: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0) 49%, rgba(255, 255, 255, 0.2) 51%, rgba(255, 255, 255, 0.2));
         border-radius: 4px;
@@ -122,7 +124,7 @@ section {
     section div.event.now div.left {
       opacity: 1; }
     section div.event.now div.right {
-      background: #23b9ff;
+      background: #ff6450;
       color: white; }
   section .panel {
     position: fixed;
@@ -134,5 +136,5 @@ section {
     width: 60%;
     text-align: center;
     font-size: 64px;
-    background: black;
+    background: rgba(0, 0, 0, 0.8);
     color: white; }

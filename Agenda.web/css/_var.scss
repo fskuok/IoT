@@ -12,9 +12,6 @@
 
 
 
-
-
-
 /***********************
 
           COLOR
@@ -22,18 +19,18 @@
 ************************/
 
 /* BACKGROUND COLOR */
-$aside-bg: #1f64ba;
-$aside-ongoing-bg: #ff523c;
+$aside-bg: #23b9ff;
+$aside-ongoing-bg: #ff6450;
 
 $right-not-ongoing-bg: #f9f9f9;
-$right-ongoing-bg: #23b9ff;
+$right-ongoing-bg: #ff6450;
 
 /* FONT COLOR */
 $right-not-ongoing-color: #23b9ff;
 $right-ongoing-color: white;
 
 
-
+$panel-bg: rgba(black, 0.8);
 
 
 
@@ -47,16 +44,21 @@ $aside-total-width: 30%;
 $now-event-top: 200px;
 
 /* SIZE */
+$aside-above-margin-tb:  20px;
 $above-now-height: 200px;
+
 
 $event-total-height: 130px;
 $event-border-bottom: 10px;
 $event-height: $event-total-height - $event-border-bottom;
 
 $event-padding-tb: 10px;
+
+$event-left-padding-lr: 1%;
+
+
 $event-left-height: $event-height - 2*$event-padding-tb;
 $event-left-total-width: $aside-total-width;
-$event-left-padding-lr: 1%;
 $event-left-width: $event-left-total-width - 2 * $event-left-padding-lr;
 
 $event-right-total-width: 100% - $event-left-total-width;
@@ -64,4 +66,17 @@ $event-right-padding-lr: $event-left-padding-lr;
 $event-right-width: $event-right-total-width - 2 * $event-right-padding-lr;
 $event-right-height: $event-left-height;
 
+/* ICON SIZE */
 $icon-size: 20px;
+
+
+/* FONT SIZE*/
+
+
+$aside-above-fs: 32px;
+$aside-ongoing-fs: 24px;
+$event-fs: 24px;
+$event-2-fs: 20px;
+
+$event-topic-fs: 28px;
+$event-people-fs: 20px;

@@ -1,16 +1,10 @@
-// link of the data sheet
-var AGENDA_GOOGLE_SPREADSHEET_KEY = "1rGsUNIk_zhfuNUMglR-4My7vPqku-sZg8JBYkKp9Qf4",
-    SPARK_SPREADSHEET_KEY =         "11fi7mpyJZNgMvyP9qtCYFzPUNSQV4CDGsyXFqZnOl10",
-	DEVICES = {
-			"DOOR": "53ff6e066667574826422167"
-		};
-
-
 (function(){
 
     'use strict';
 
-	var agendaApp = angular.module('agendaApp', [])
+	var AGENDA_GOOGLE_SPREADSHEET_KEY = "1rGsUNIk_zhfuNUMglR-4My7vPqku-sZg8JBYkKp9Qf4",
+        SPARK_SPREADSHEET_KEY =         "11fi7mpyJZNgMvyP9qtCYFzPUNSQV4CDGsyXFqZnOl10",
+        agendaApp = angular.module('agendaApp', [])
 
         //using tabletop.js https://github.com/jsoma/tabletop
         //to fetch data form google spreadsheet
@@ -31,7 +25,14 @@ var AGENDA_GOOGLE_SPREADSHEET_KEY = "1rGsUNIk_zhfuNUMglR-4My7vPqku-sZg8JBYkKp9Qf
         })
 
         //services that connect spark boards
-        .factory('spark', ['$http', function($http){
+        .factory('spark', ['$http', 'tableTop', function($http, tableTop){
+            var device_info;
+
+            tableTop.get(SPARK_SPREADSHEET_KEY, function(data){
+                device_info = data;
+            });
+
+
             function RETURN_URL(DEVICE_KEY, VARIABLE_NAME){
 
                 return  "https://api.spark.io/v1/devices/" + DEVICE_KEY + "/" +  VARIABLE_NAME + "?access_token=6564c0732ab5d528aee3a4b84b9f35b77604d026";
@@ -118,10 +119,13 @@ var AGENDA_GOOGLE_SPREADSHEET_KEY = "1rGsUNIk_zhfuNUMglR-4My7vPqku-sZg8JBYkKp9Qf
 
         .controller('agendaCtrl',
 
-            ['$scope', '$http', 'tableTop', 'dom', 'time',
-                function( $scope, $http, tableTop, dom, time){
+            ['$scope', '$http', 'tableTop', 'dom', 'time', 'spark',
+                function( $scope, $http, tableTop, dom, time, spark){
                     $scope.panelMessage = 'Loading...';
                     $scope.nowEvent = {};
+
+
+                    function _2d(a){ return a < 10 ? '0' + a : a + ''; }
 
                     //fetch agenda data
                     tableTop.get( AGENDA_GOOGLE_SPREADSHEET_KEY, function(data) {
@@ -135,9 +139,6 @@ var AGENDA_GOOGLE_SPREADSHEET_KEY = "1rGsUNIk_zhfuNUMglR-4My7vPqku-sZg8JBYkKp9Qf
 
                         });
                     });
-
-
-
 
 
                     //set date data
@@ -158,19 +159,20 @@ var AGENDA_GOOGLE_SPREADSHEET_KEY = "1rGsUNIk_zhfuNUMglR-4My7vPqku-sZg8JBYkKp9Qf
 
                         //refresh the clock
                         $scope.time.hour =
-                                nowTime.getHours() < 10 ? '0' + nowTime.getHours(): nowTime.getHours();
+                                _2d(nowTime.getHours());
 
                         $scope.time.min =
-                                nowTime.getMinutes() < 10 ? '0' + nowTime.getMinutes(): nowTime.getMinutes();
+                                _2d(nowTime.getMinutes());
 
                         $scope.time.sec =
-                                nowTime.getSeconds() < 10 ? '0' + nowTime.getSeconds(): nowTime.getSeconds();
+                                _2d(nowTime.getSeconds());
 
                         //refresh the remaining time of current event
                         if($scope.nowEvent.endDate){
+
                             remainingTime = time.duration(nowTime, $scope.nowEvent.endDate);
-                            $scope.remainingHours = remainingTime[0] < 10 ? '0' + remainingTime[0] : remainingTime[0];
-                            $scope.remainingMins = remainingTime[1] < 10 ? '0' + remainingTime[1] : remainingTime[1];
+                            $scope.remainingHours = _2d(remainingTime[0]);
+                            $scope.remainingMins = _2d(remainingTime[1]);
                         }
 
                     }
@@ -187,13 +189,14 @@ var AGENDA_GOOGLE_SPREADSHEET_KEY = "1rGsUNIk_zhfuNUMglR-4My7vPqku-sZg8JBYkKp9Qf
 
                         s.setHours( start[0] );
                         s.setMinutes( start[1] );
-                        s.setSeconds(0);
+                        s.setSeconds( 0 );
                         e.setHours( end[0] );
                         e.setMinutes( end[1] );
-                        e.setSeconds(0);
+                        e.setSeconds( 0 );
 
                         if( s <= n && n < e ){
-                            if(eventId){
+
+                            if(eventId !== undefined){
                                 dom.events.scrollTo( eventId );
 
                                 $scope.nowEvent.id = eventId;
@@ -201,6 +204,7 @@ var AGENDA_GOOGLE_SPREADSHEET_KEY = "1rGsUNIk_zhfuNUMglR-4My7vPqku-sZg8JBYkKp9Qf
                                 $scope.nowEvent.endDate = e;
 
                             }
+
                             return 'now';
 
                         }else if( n >= e ){
@@ -212,16 +216,10 @@ var AGENDA_GOOGLE_SPREADSHEET_KEY = "1rGsUNIk_zhfuNUMglR-4My7vPqku-sZg8JBYkKp9Qf
                         }
                     };
 
-
-
-
-
                     //refreshed by seconds
                     setInterval(function(){
                         $scope.$apply(refreshTime);
                     }, 1000);
-
-
 
 
             }]

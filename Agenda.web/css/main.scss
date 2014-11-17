@@ -34,10 +34,10 @@ section{
       p.date, p.clock{
         width: 100%;
         float: left; /* avoid content overflow*/
-        font-size: 32px;
+        font-size: $aside-above-fs;
         color: white;
         text-align: center;
-        margin: 20px 0;
+        margin: $aside-above-margin-tb 0;
       }
 
       p.clock span{
@@ -54,7 +54,7 @@ section{
 
       margin: 0;
       padding: $event-padding-tb 0;
-      font-size: 24px;
+      font-size: $aside-ongoing-fs;
       text-align: center;
       color: white;
 
@@ -79,7 +79,7 @@ section{
     margin: 0 0 $event-border-bottom;
 
     color: white;
-    font-size: 24px;
+    font-size: $event-fs;
     opacity: 0.8;
 
     transition: all ease-in-out 1s;
@@ -110,18 +110,18 @@ section{
         opacity: 0.7;
 
         span{
-          font-size: 20px;
+          font-size: $event-2-fs;
         }
       }
 
       p.topic{
         padding: 8px 0;
-        font-size: 28px;
+        font-size: $event-topic-fs;
       }
 
       p.people{
         opacity: 0.7;
-        font-size: 20px;
+        font-size: $event-people-fs
       }
 
       span.icon{
@@ -157,7 +157,6 @@ section{
         color: $right-ongoing-color;
       };
     }
-
   }
 
   .panel{
@@ -166,14 +165,13 @@ section{
     left: 0;
     z-index: 101;
 
-
     padding: 20%;
     height: 60%;
     width: 60%;
     text-align: center;
     font-size: 64px;
 
-    background: black;
+    background: $panel-bg;
 
     color: white;
   }
