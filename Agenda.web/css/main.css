@@ -1,3 +1,4 @@
+@charset "UTF-8";
 /***********************
 
           COLOR
@@ -13,124 +14,220 @@
 /* SIZE */
 /* ICON SIZE */
 /* FONT SIZE*/
+/* CIRCLE SIZE */
 * {
   margin: 0;
   padding: 0;
   font-family: 'Gill Sans', 'PT Sans', sans-serif;
+  color: white;
   font-weight: 330; }
 
 html, body {
   height: 100%;
   width: 100%;
   overflow: hidden; }
+  html p.tag, body p.tag {
+    font-size: 16px;
+    margin: 12px auto 8px;
+    text-align: center; }
 
+.progressBar {
+  width: 80%;
+  height: 20px;
+  margin: 20px auto;
+  position: relative;
+  border: 1px solid white;
+  border-radius: 15px;
+  overflow: hidden; }
+  .progressBar .progress {
+    background: #ff6450;
+    background-image: url("../img/progress_v.png");
+    background-size: contain;
+    height: 100%; }
+
+/*****************************************************************************************
+
+
+
+
+
+
+                                            (__)　
+                                            /oo\________
+                                            \　/　　　　 \---\
+                                             \/　　　 /　 \　 \
+                                            　　\_|___\_|/  *
+                                            　　  ||　 YY|   ***
+          **                                　　  ||　　||   ****
+*****************************************************************************************
+*****************************************************************************************
+*****************************************************************************************/
 section {
   float: left;
   width: 100%;
   height: 100%;
-  /************** Event **************/ }
-  section aside {
+  background: #49464c;
+  /******************************************** Event ********************************************/
+  /*----------------------------------------------- Event END -----------------------------------------------*/
+  /************************************************** Panel **************************************************/ }
+  section aside.left {
     height: 100%;
-    width: 30%;
-    background: #23b9ff;
+    width: 22%;
+    background: #2f2f2f;
     position: fixed;
     top: 0;
     left: 0;
-    /************** Aside Above **************/
-    /************** Aside Ongoing **************/ }
-    section aside div.above {
+    z-index: 10;
+    box-shadow: 0 0 10px black;
+    /******************************************** Aside -> Above ********************************************/
+    /******************************************** Aside -> Ongoing ********************************************/ }
+    section aside.left div.above {
       width: 100%;
-      height: 200px; }
-      section aside div.above p.date, section aside div.above p.clock {
+      height: 300px; }
+      section aside.left div.above p.date, section aside.left div.above p.clock {
         width: 100%;
         float: left;
         /* avoid content overflow*/
-        font-size: 32px;
+        font-size: 36px;
         color: white;
         text-align: center;
         margin: 20px 0; }
-      section aside div.above p.clock span {
+      section aside.left div.above p.clock span {
         background: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0) 49%, rgba(255, 255, 255, 0.2) 51%, rgba(255, 255, 255, 0.2));
         border-radius: 4px;
         padding: 2px 6px;
         border: 1px solid white; }
-    section aside div.ongoing {
+    section aside.left div.ongoing {
       height: 100px;
       width: 100%;
       margin: 0;
       padding: 10px 0;
-      font-size: 24px;
+      font-size: 32px;
       text-align: center;
       color: white;
       background: #ff6450; }
-      section aside div.ongoing div.remaining span {
+      section aside.left div.ongoing div.remaining span {
         background: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0) 49%, rgba(255, 255, 255, 0.2) 51%, rgba(255, 255, 255, 0.2));
         border-radius: 4px;
         padding: 2px 6px;
         border: 1px solid white; }
-  section div.event {
+  section aside.right {
+    height: 100%;
+    width: 4%;
+    background: #2f2f2f;
+    position: fixed;
+    top: 0;
+    right: 0;
+    z-index: 10;
+    box-shadow: 0 0 10px black; }
+  section div.events {
     position: relative;
-    top: 200px;
-    height: 120px;
+    height: 100%;
     width: 100%;
-    margin: 0 0 10px;
-    color: white;
-    font-size: 24px;
-    opacity: 0.8;
-    transition: all ease-in-out 1s;
-    /************** RIGHT **************/ }
-    section div.event.now {
-      opacity: 1; }
-    section div.event div.left, section div.event div.right {
-      float: left;
-      height: 100px;
-      padding: 10px 1%; }
-    section div.event div.left {
-      width: 28%;
-      opacity: 0; }
-    section div.event div.right {
-      width: 68%;
-      background: #f9f9f9;
-      color: #23b9ff; }
-      section div.event div.right div.time {
-        opacity: 0.7; }
-        section div.event div.right div.time span {
-          font-size: 20px; }
-      section div.event div.right p.topic {
-        padding: 8px 0;
-        font-size: 28px; }
-      section div.event div.right p.people {
-        opacity: 0.7;
-        font-size: 20px; }
-      section div.event div.right span.icon {
-        width: 20px;
+    /* timeline */ }
+    section div.events div.event {
+      position: relative;
+      top: 300px;
+      height: 120px;
+      width: 100%;
+      margin: 0 0 10px;
+      z-index: 1;
+      color: white;
+      font-size: 24px;
+      opacity: 0.8;
+      transition: all ease-in-out 1s;
+      /************************************************** Right **************************************************/
+      /****************** text before and after events block ******************/
+      /******************************************** Event -> Right ********************************************/
+      /*------------------------------------------- Event -> Right END -------------------------------------------*/
+      /* different styles for ongoing event */ }
+      section div.events div.event.now {
+        opacity: 1; }
+      section div.events div.event div.left, section div.events div.event div.right {
+        float: left;
+        height: 100px;
+        padding: 10px 1%;
+        width: 20%;
+        opacity: 0; }
+      section div.events div.event:first-of-type div.right:before, section div.events div.event:last-of-type div.right:after {
+        display: block;
+        position: absolute;
+        font-size: 16px;
         height: 20px;
-        position: relative;
-        top: 2px;
-        display: inline-block;
-        background-repeat: no-repeat; }
-        section div.event div.right span.icon.time {
-          background: url("../img/icon/clockwhite.png");
-          background-size: cover; }
-        section div.event div.right span.icon.speech {
-          background: url("../img/icon/speakerwhite.png");
-          background-size: cover; }
-        section div.event div.right span.icon.people {
-          background: url("../img/icon/peoplewhite.png");
-          background-size: cover; }
-        section div.event div.right span.icon.presentation {
-          background: url("../img/icon/projecterwhite.png");
-          background-size: cover; }
-    section div.event.now div.left {
-      opacity: 1; }
-    section div.event.now div.right {
-      background: #ff6450;
-      color: white; }
+        width: 76%;
+        text-align: center; }
+      section div.events div.event:first-of-type div.right:before {
+        content: "- Began of the Meeting -";
+        top: -24px; }
+      section div.events div.event:last-of-type div.right:after {
+        content: "- End of the Meeting -";
+        bottom: -24px; }
+      section div.events div.event div.right {
+        width: 76%;
+        background: rgba(47, 47, 47, 0.18);
+        color: silver;
+        opacity: 1; }
+        section div.events div.event div.right div.time {
+          opacity: 0.7; }
+          section div.events div.event div.right div.time span {
+            font-size: 20px; }
+        section div.events div.event div.right p.topic {
+          padding: 8px 0;
+          font-size: 28px; }
+        section div.events div.event div.right p.people {
+          opacity: 0.7;
+          font-size: 20px; }
+        section div.events div.event div.right span.icon {
+          width: 20px;
+          height: 20px;
+          position: relative;
+          top: 2px;
+          display: inline-block;
+          background-repeat: no-repeat; }
+          section div.events div.event div.right span.icon.time {
+            background: url("../img/icon/timewhite.png");
+            background-size: cover; }
+          section div.events div.event div.right span.icon.speech {
+            background: url("../img/icon/speechwhite.png");
+            background-size: cover; }
+          section div.events div.event div.right span.icon.people {
+            background: url("../img/icon/peoplewhite.png");
+            background-size: cover; }
+          section div.events div.event div.right span.icon.presentation {
+            background: url("../img/icon/presentationwhite.png");
+            background-size: cover; }
+          section div.events div.event div.right span.icon.break {
+            background: url("../img/icon/breakwhite.png");
+            background-size: cover; }
+        section div.events div.event div.right figure.circle {
+          position: absolute;
+          top: 50px;
+          right: 20px;
+          border: 2px solid white;
+          width: 26px;
+          height: 26px;
+          border-radius: 15px; }
+      section div.events div.event.now div.left, section div.events div.event.now div.right {
+        opacity: 1; }
+      section div.events div.event.now div.right {
+        background: #ff6450;
+        color: white; }
+        section div.events div.event.now div.right figure.circle {
+          background: white; }
+    section div.events:after {
+      content: "";
+      position: absolute;
+      top: 0;
+      right: 34px;
+      height: 100%;
+      width: 2px;
+      background: white;
+      z-index: 99; }
   section .panel {
     position: fixed;
     top: 0;
     left: 0;
-    z-index: 101;
+    z-index: 100;
     padding: 20%;
     height: 60%;
     width: 60%;

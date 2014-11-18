@@ -17,59 +17,67 @@
 <body ng-app="agendaApp">
 	<section ng-controller="agendaCtrl">
 
-		<aside>
+		<aside class="left">
 			<div class="above">
 				<p class="topic"></p>
 				<p class="date">{{date()}}</p>
 				<p class="clock">
 					<span class="hour">{{time.hour}}</span> : 
-					<span class="min">{{time.min}}</span> : 
-					<span class="sec">{{time.sec}}</span>
+					<span class="min">{{time.min}}</span> <!--:
+					<span class="sec">{{time.sec}}</span>-->
 				</p>
 			</div>
 			
 			<div class="ongoing">
                 <div class="remaining">
-                    Remains :
-                    <span class="hour">{{remainingHours}}</span> :
-                    <span class="min">{{remainingMins}}</span>
+                    <p class="tag">Remains</p>
+                    <span class="hour">{{remainingHours || '00'}}</span> :
+                    <span class="min">{{remainingMins || '00'}}</span>
                 </div>
 			</div>
 
 			<div class="below">
-				
+                <p class="tag">Meeting progress</p>
+				<div class="progressBar"><div class="progress" style="width:{{progressPercentage}}%;"></div></div>
 			</div>
 		</aside>
 
-		<div class="event {{isOn(event.start, event.end, $index)}}" ng-repeat="event in events">
-			<!--for future use in case-->
-			<div class="left">
+        <div class="events">
+            <div class="event {{isOn(event.start, event.end, $index)}}" ng-repeat="event in events">
+                <!--for future use in case-->
+                <div class="left">
 
-			</div>
+                </div>
 
 
-			<div class="right">
-				<div class="time">
-					<span class="icon time"></span>
-					<span class="start">{{event.start}}</span>
-					<span class="end">{{event.end}}</span>
-					<span>{{duration(event.start, event.end).join('H') + 'M'}}</span>
-					
-				</div>
-				<p class="topic">
-					<span class="icon {{event.type}}"></span> 
-					{{event.topic}}
-				</p>
-				<p class="people">
-					<span class="icon people"></span>
-					{{event.people}}
-				</p>
-			</div>
-		</div>
+                <div class="right">
+                    <div class="time">
+                        <span class="icon time"></span>
+                        <span class="start">{{event.start}}</span>
+                        <span class="end">{{event.end}}</span>
+                        <span>{{ duration(event.start, event.end).join('H') + 'M' }}</span>
 
-        <div class="panel">
-            {{panelMessage}}
+                    </div>
+
+                    <p class="topic">
+                        <span class="icon {{event.type}}"></span>
+                        {{event.topic}}
+                    </p>
+
+                    <p class="people">
+                        <span class="icon people"></span>
+                        {{event.people}}
+                    </p>
+
+                    <figure class="circle">
+                    </figure>
+                </div>
+            </div>
         </div>
+
+        <section class="panel">
+            {{panelMessage}}
+        </section>
 	</section>
 </body>
 </html>

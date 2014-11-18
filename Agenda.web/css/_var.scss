@@ -1,14 +1,14 @@
-@mixin icon($filename){
-  background: url('../img/icon/' + $filename +'.png');
-  background-size: cover;
-}
-
 @mixin clock($a){
   background: linear-gradient(to bottom, rgba(white,0), rgba(white,0) 49%, rgba(white, 0.2) 51%, rgba(white, 0.2));
   border-radius: 2*$a;
   padding: $a 3*$a;
   border: 1px solid white;
 }
+
+$events-z: 1;
+$aside-z: 10;
+$timeline-z: 99;
+$panel-z: 100;
 
 
 
@@ -19,18 +19,24 @@
 ************************/
 
 /* BACKGROUND COLOR */
-$aside-bg: #23b9ff;
+
+$aside-bg: #2f2f2f;
 $aside-ongoing-bg: #ff6450;
 
-$right-not-ongoing-bg: #f9f9f9;
+$main-bg: #49464c;
+
+$right-not-ongoing-bg: rgba(47, 47, 47, 0.18);
 $right-ongoing-bg: #ff6450;
 
 /* FONT COLOR */
-$right-not-ongoing-color: #23b9ff;
+$right-not-ongoing-color: #c0c0c0;
 $right-ongoing-color: white;
 
 
 $panel-bg: rgba(black, 0.8);
+$circle-color: white;
+
+$progress-bg: url('../img/progress_v.png');
 
 
 
@@ -40,31 +46,29 @@ $panel-bg: rgba(black, 0.8);
 
 ************************/
 
-$aside-total-width: 30%;
-$now-event-top: 200px;
+$aside-left-total-width: 22%;
+$aside-right-total-width: 4%;
+$event-left-total-width: $aside-left-total-width;
 
+
+
+$now-event-top: 400px;
 /* SIZE */
 $aside-above-margin-tb:  20px;
-$above-now-height: 200px;
+$above-now-height: 300px;
 
 
 $event-total-height: 130px;
 $event-border-bottom: 10px;
-$event-height: $event-total-height - $event-border-bottom;
-
 $event-padding-tb: 10px;
-
 $event-left-padding-lr: 1%;
-
-
-$event-left-height: $event-height - 2*$event-padding-tb;
-$event-left-total-width: $aside-total-width;
-$event-left-width: $event-left-total-width - 2 * $event-left-padding-lr;
-
-$event-right-total-width: 100% - $event-left-total-width;
-$event-right-padding-lr: $event-left-padding-lr;
-$event-right-width: $event-right-total-width - 2 * $event-right-padding-lr;
-$event-right-height: $event-left-height;
+  $event-height: $event-total-height - $event-border-bottom;
+  $event-left-height: $event-height - 2*$event-padding-tb;
+  $event-left-width: $event-left-total-width - 2 * $event-left-padding-lr;
+  $event-right-total-width: 100% - $event-left-total-width;
+  $event-right-padding-lr: $event-left-padding-lr;
+  $event-right-width: $event-right-total-width - 2 * $event-right-padding-lr;
+  $event-right-height: $event-left-height;
 
 /* ICON SIZE */
 $icon-size: 20px;
@@ -72,11 +76,20 @@ $icon-size: 20px;
 
 /* FONT SIZE*/
 
+$tag-fs: 16px;
 
-$aside-above-fs: 32px;
-$aside-ongoing-fs: 24px;
+$aside-above-fs: 36px;
+$aside-ongoing-fs: 32px;
 $event-fs: 24px;
 $event-2-fs: 20px;
 
 $event-topic-fs: 28px;
 $event-people-fs: 20px;
+
+
+/* CIRCLE SIZE */
+$event-circle-size: 30px;
+$event-circle-stroke-width: 2px;
+$event-circle-width: $event-circle-size - 2*$event-circle-stroke-width;
+$event-circle-right: 20px;
+$timeline-width: 2px;

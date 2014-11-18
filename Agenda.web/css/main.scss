@@ -4,6 +4,7 @@
   margin: 0;
   padding: 0;
   font-family: 'Gill Sans', 'PT Sans', sans-serif;
+  color: white;
   font-weight: 330;
 }
 
@@ -11,22 +12,69 @@ html, body{
   height: 100%;
   width: 100%;
   overflow: hidden;
+
+  p.tag{
+    font-size: $tag-fs;
+    margin: 12px auto 8px;
+    text-align: center;
+  }
 }
+
+
+.progressBar{
+  width: 80%;
+  height: 20px;
+  margin: 20px auto;
+  position: relative;
+  border: 1px solid white;
+  border-radius: 15px;
+  overflow: hidden;
+
+  .progress{
+    background: $aside-ongoing-bg;
+    background-image: $progress-bg;
+    background-size: contain;
+    height: 100%;
+  }
+}
+
+
+/*****************************************************************************************
+
+
+
+
+
+
+                                            (__)　
+                                            /oo\\________
+                                            \　/　　　　 \---\
+                                             \/　　　 /　 \　 \
+                                            　　\\_|___\\_|/  *
+                                            　　  ||　 YY|   ***
+          **                                　　  ||　　||   ****
+*****************************************************************************************
+*****************************************************************************************
+*****************************************************************************************/
+
 
 section{
   float: left;
   width: 100%;
   height: 100%;
+  background: $main-bg;
 
-  aside{
+  aside.left{
   height: 100%;
-  width: $aside-total-width;
+  width: $aside-left-total-width;
   background: $aside-bg;
   position: fixed;
   top: 0;
   left: 0;
+  z-index: $aside-z;
+  box-shadow: 0 0 10px black;
 
-    /************** Aside Above **************/
+/******************************************** Aside -> Above ********************************************/
     div.above{
       width: 100%;
       height: $above-now-height;
@@ -46,9 +94,10 @@ section{
 
     }
 
-    /************** Aside Ongoing **************/
+/******************************************** Aside -> Ongoing ********************************************/
 
     div.ongoing{
+
       height: 100px;
       width: 100%;
 
@@ -60,110 +109,189 @@ section{
 
       background: $aside-ongoing-bg;
 
+
       div.remaining span{
         @include clock(2px);
       }
     }
 
+    div.below{
+
+    }
+
   }
 
-/************** Event **************/
 
-  div.event{
+  aside.right{
+    height: 100%;
+    width: $aside-right-total-width;
+    background: $aside-bg;
+    position: fixed;
+    top: 0;
+    right: 0;
+    z-index: $aside-z;
+    box-shadow: 0 0 10px black;
+  }
+
+
+/******************************************** Event ********************************************/
+  div.events{
     position: relative;
-    top: $above-now-height;
-
-    height: $event-height;
+    height: 100%;
     width: 100%;
 
-    margin: 0 0 $event-border-bottom;
 
-    color: white;
-    font-size: $event-fs;
-    opacity: 0.8;
+    div.event{
+      position: relative;
+      top: $above-now-height;
+      height: $event-height;
+      width: 100%;
+      margin: 0 0 $event-border-bottom;
+      z-index: $events-z;
 
-    transition: all ease-in-out 1s;
+      color: white;
+      font-size: $event-fs;
+      opacity: 0.8;
 
-    &.now{
-      opacity: 1;
-    }
+      transition: all ease-in-out 1s;
 
-    div.left, div.right{
-      float: left;
-      height: $event-left-height;
-      padding: $event-padding-tb $event-left-padding-lr;
-    }
+      &.now{ opacity: 1; }
 
-    div.left{
-      width: $event-left-width;
-      opacity: 0;
-    }
-
-    /************** RIGHT **************/
-
-    div.right{
-      width: $event-right-width;
-      background: $right-not-ongoing-bg;
-      color: $right-not-ongoing-color;
-
-      div.time{
-        opacity: 0.7;
-
-        span{
-          font-size: $event-2-fs;
-        }
-      }
-
-      p.topic{
-        padding: 8px 0;
-        font-size: $event-topic-fs;
-      }
-
-      p.people{
-        opacity: 0.7;
-        font-size: $event-people-fs
-      }
-
-      span.icon{
-        width: $icon-size;
-        height: $icon-size;
-
-        position: relative;
-        top: 2px;
-        display: inline-block;
-        background-repeat: no-repeat;
-
-        &.time{
-          @include icon(clockwhite);
-        }
-        &.speech{
-          @include icon(speakerwhite);
-        }
-        &.people{
-          @include icon(peoplewhite);
-        }
-        &.presentation{
-          @include icon(projecterwhite);
-        }
-      }
-    }
-
-    &.now{
       div.left{
-        opacity: 1;
+        float: left;
+        height: $event-left-height;
+        padding: $event-padding-tb $event-left-padding-lr;
+        width: $event-left-width;
+        opacity: 0;
       }
+
+      /************************************************** Right **************************************************/
+
+
+
+      /****************** text before and after events block ******************/
+      &:first-of-type div.right:before, &:last-of-type div.right:after{
+        display: block;
+        position: absolute;
+        font-size: 16px;
+        height: 20px;
+        width: $event-right-width;
+        text-align: center;
+      }
+
+      &:first-of-type div.right:before{
+        content:"- Began of the Meeting -";
+        top: -24px;
+      }
+
+      &:last-of-type div.right:after{
+        content:"- End of the Meeting -";
+        bottom: -24px;
+      }
+
+
+
+
+      /******************************************** Event -> Right ********************************************/
       div.right{
-        background: $right-ongoing-bg;
-        color: $right-ongoing-color;
-      };
+        @extend div.left;
+        width: $event-right-width;
+        background: $right-not-ongoing-bg;
+        color: $right-not-ongoing-color;
+        opacity: 1;
+
+        div.time{
+          opacity: 0.7;
+
+          span{
+            font-size: $event-2-fs;
+          }
+        }
+
+        p.topic{
+          padding: 8px 0;
+          font-size: $event-topic-fs;
+        }
+
+        p.people{
+          opacity: 0.7;
+          font-size: $event-people-fs
+        }
+
+        span.icon{
+          width: $icon-size;
+          height: $icon-size;
+
+          position: relative;
+          top: 2px;
+          display: inline-block;
+          background-repeat: no-repeat;
+
+          @each $type in time, speech, people, presentation, break{
+            &.#{$type}{
+              background: url('../img/icon/' + $type +'white.png');
+              background-size: cover;
+            }
+          }
+        }
+
+        figure.circle{
+          position:absolute;
+          top: ($event-total-height - $event-circle-size)/2;
+          right: $event-circle-right;
+          border: $event-circle-stroke-width solid $circle-color;
+          width: $event-circle-width;
+          height: $event-circle-width;
+          border-radius: $event-circle-size/2;
+        }
+      }
+
+      /*------------------------------------------- Event -> Right END -------------------------------------------*/
+
+      /* different styles for ongoing event */
+      &.now{
+        div.left{
+          opacity: 1;
+        }
+        div.right{
+          background: $right-ongoing-bg;
+          color: $right-ongoing-color;
+
+          figure.circle{
+            background: $circle-color;
+          }
+        };
+      }
+
+
+    }
+
+    /* timeline */
+    &:after{
+      content: "";
+      position: absolute;
+      top: 0;
+      right: $event-circle-right + ($event-circle-size - $timeline-width)/2;
+
+
+      height: 100%;
+      width: $timeline-width;
+
+      background: $circle-color;
+      z-index: $timeline-z;
     }
   }
 
+/*----------------------------------------------- Event END -----------------------------------------------*/
+
+
+
+/************************************************** Panel **************************************************/
   .panel{
     position: fixed;
     top: 0;
     left: 0;
-    z-index: 101;
+    z-index: $panel-z;
 
     padding: 20%;
     height: 60%;
