@@ -3,9 +3,9 @@
 *{
   margin: 0;
   padding: 0;
-  font-family: 'Gill Sans', 'PT Sans', sans-serif;
+  font-family:  'Helvetica Neue' , sans-serif;
   color: white;
-  font-weight: 330;
+  font-weight: 100;
 }
 
 html, body{
@@ -38,6 +38,18 @@ html, body{
   }
 }
 
+button{
+  height: 40px;
+  width: 40px;
+  border: 1px solid white;
+  position: fixed;
+  left: 20px;
+  bottom: 20px;
+  z-index: 199;
+  background: url('../img/icon/controlpanelwhite.png');
+  background-size: contain;
+}
+
 
 /*****************************************************************************************
 
@@ -63,6 +75,7 @@ section{
   width: 100%;
   height: 100%;
   background: $main-bg;
+  background-size: cover;
 
   aside.left{
   height: 100%;
@@ -227,6 +240,7 @@ section{
           display: inline-block;
           background-repeat: no-repeat;
 
+          /*url for icons*/
           @each $type in time, speech, people, presentation, break{
             &.#{$type}{
               background: url('../img/icon/' + $type +'white.png');
@@ -243,6 +257,26 @@ section{
           width: $event-circle-width;
           height: $event-circle-width;
           border-radius: $event-circle-size/2;
+
+          &:before, &:after{
+            content: "";
+            position: absolute;
+            left: ( $event-circle-width - $timeline-width ) / 2;
+            height: ($event-total-height - $event-circle-width ) / 2;
+            width: $timeline-width;
+            background: $circle-color;
+            z-index: $timeline-z;
+          }
+
+          &:before{
+            top: - ($event-total-height - $event-circle-width ) / 2 ;
+
+          }
+
+          &:after{
+            bottom: - ($event-total-height - $event-circle-width ) / 2;
+
+          }
         }
       }
 
@@ -286,22 +320,78 @@ section{
 
 
 
+
+
+
+
+
 /************************************************** Panel **************************************************/
-  .panel{
+  section.panel{
     position: fixed;
     top: 0;
     left: 0;
     z-index: $panel-z;
 
-    padding: 20%;
-    height: 60%;
-    width: 60%;
-    text-align: center;
-    font-size: 64px;
+    padding: 8%;
+    height: 84%;
+    width: 84%;
 
     background: $panel-bg;
 
     color: white;
-  }
 
+    h2{
+      text-align: center;
+      font-size: 64px;
+      padding-bottom: 24px;
+      border-bottom: 2px solid white;
+    }
+
+    div.device{
+      width: 96%;
+      padding: 10px 2%;
+      margin: 10px auto;
+      overflow: auto;
+      background: $panel-device-bg;
+
+
+      h5{
+        font-size: $panel-device-name-fs;
+        border-bottom: 1px solid #8e8e8e;
+        padding: 4px auto;
+        margin: 4px auto;
+        clear: both;
+      }
+
+      div.variable{
+        float: left;
+        clear: left;
+        width: 50%;
+
+        p{
+          font-size: $panel-device-var-description-fs;
+          padding: 3px 0;
+
+          span{
+            color: $device-var-name-color;
+            font-size: $panel-device-var-name-fs;
+            font-weight: 300;
+          }
+        }
+
+      }
+
+      div.function{
+        @extend div.variable;
+        float: right;
+        clear: right;
+
+        p{
+          span{
+            color: $device-fn-name-color;
+          }
+        }
+      }
+    }
+  }
 }

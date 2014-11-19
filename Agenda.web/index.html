@@ -7,12 +7,12 @@
     <!--javaScripts-->
 	<script src="bower_components/angular/angular.js"></script>
 	<script src="bower_components/jquery/dist/jquery.js"></script>
+    <script src="js/data.js"></script>
 	<script src="js/main.js"></script>
 	<script src="js/tabletop.js"></script>
-	<script src="../../tf.js/tf.js"></script>
 
     <!--fonts-->
-	<link href='http://fonts.googleapis.com/css?family=PT+Sans' rel='stylesheet' type='text/css'>
+
 </head>
 <body ng-app="agendaApp">
 	<section ng-controller="agendaCtrl">
@@ -40,9 +40,12 @@
                 <p class="tag">Meeting progress</p>
 				<div class="progressBar"><div class="progress" style="width:{{progressPercentage}}%;"></div></div>
 			</div>
+
+
 		</aside>
 
         <div class="events">
+
             <div class="event {{isOn(event.start, event.end, $index)}}" ng-repeat="event in events">
                 <!--for future use in case-->
                 <div class="left">
@@ -69,15 +72,29 @@
                         {{event.people}}
                     </p>
 
-                    <figure class="circle">
-                    </figure>
+                    <figure class="circle"></figure>
                 </div>
+
             </div>
+
         </div>
 
         <section class="panel">
-            {{panelMessage}}
+
+            <h2>{{panelMessage}}</h2>
+
+            <div class="device" ng-repeat="(name, value) in devices | ignoreKey: deviceIgnoreList">
+                <h5>{{name}}</h5>
+
+                <div ng-repeat="(varName, value) in value | ignoreKey: deviceVarIgnoreList " class="{{value.type}}">
+                    <p><span>{{spaceCamelCase(varName)}}: </span> {{value.description}}</p>
+                </div>
+
+            </div>
+
         </section>
+
+        <button ng-click="togglePanel()"></button>
 	</section>
 </body>
 </html>

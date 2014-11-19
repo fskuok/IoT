@@ -5,9 +5,9 @@
   border: 1px solid white;
 }
 
-$events-z: 1;
-$aside-z: 10;
-$timeline-z: 99;
+$events-z: 10;
+$aside-z: 80;
+$timeline-z: 0;
 $panel-z: 100;
 
 
@@ -23,17 +23,23 @@ $panel-z: 100;
 $aside-bg: #2f2f2f;
 $aside-ongoing-bg: #ff6450;
 
-$main-bg: #49464c;
+$main-bg: url('../img/artistic-photography-317486 copy.jpg');
 
-$right-not-ongoing-bg: rgba(47, 47, 47, 0.18);
+$right-not-ongoing-bg: rgba(black, 0.8);
 $right-ongoing-bg: #ff6450;
+$panel-bg: rgba(black, 0.9);
+$panel-device-bg: #333333;
+
+
 
 /* FONT COLOR */
 $right-not-ongoing-color: #c0c0c0;
 $right-ongoing-color: white;
+$device-var-name-color: #da97e7;
+$device-fn-name-color: #c8de6a;
 
 
-$panel-bg: rgba(black, 0.8);
+
 $circle-color: white;
 
 $progress-bg: url('../img/progress_v.png');
@@ -47,12 +53,11 @@ $progress-bg: url('../img/progress_v.png');
 ************************/
 
 $aside-left-total-width: 22%;
-$aside-right-total-width: 4%;
+$aside-right-total-width: 0; /* aside right not in use anymore*/
 $event-left-total-width: $aside-left-total-width;
 
-
-
 $now-event-top: 400px;
+
 /* SIZE */
 $aside-above-margin-tb:  20px;
 $above-now-height: 300px;
@@ -76,15 +81,22 @@ $icon-size: 20px;
 
 /* FONT SIZE*/
 
-$tag-fs: 16px;
+$base-fs: 16px;
 
-$aside-above-fs: 36px;
-$aside-ongoing-fs: 32px;
-$event-fs: 24px;
-$event-2-fs: 20px;
+$tag-fs: $base-fs;
 
-$event-topic-fs: 28px;
-$event-people-fs: 20px;
+$aside-above-fs: $base-fs * 2.25;
+$aside-ongoing-fs: $base-fs * 2;
+$event-fs: $base-fs * 1.5;
+$event-2-fs: $base-fs * 1.25;
+
+$event-topic-fs: $base-fs * 1.75;
+$event-people-fs: $base-fs * 1.25;
+
+$panel-fs: $base-fs * 4;
+$panel-device-name-fs: $base-fs * 1.25;
+$panel-device-var-name-fs: $base-fs * 1;
+$panel-device-var-description-fs: $base-fs * 1;
 
 
 /* CIRCLE SIZE */
