@@ -270,9 +270,24 @@ section {
       margin: 10px auto;
       overflow: auto;
       background: #333333; }
+      section section.panel div.device.off h5:after, section section.panel div.device.on h5:after {
+        content: "";
+        display: inline-block;
+        position: absolute;
+        right: 8px;
+        top: 2px;
+        width: 8px;
+        height: 8px;
+        border-radius: 4px;
+        background: #c33837;
+        box-shadow: 0 0 1px #c33837; }
+      section section.panel div.device.on h5:after {
+        background: #3f803b;
+        box-shadow: 0 0 4px #3f803b; }
       section section.panel div.device h5 {
         font-size: 20px;
         border-bottom: 1px solid #8e8e8e;
+        position: relative;
         padding: 4px auto;
         margin: 4px auto;
         clear: both; }

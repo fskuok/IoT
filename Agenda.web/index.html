@@ -38,7 +38,7 @@
 
 			<div class="below">
                 <p class="tag">Meeting progress</p>
-				<div class="progressBar"><div class="progress" style="width:{{progressPercentage}}%;"></div></div>
+				<div class="progressBar"><div class="progress" style="width: {{progressPercentage}}%"></div></div>
 			</div>
 
 
@@ -83,11 +83,14 @@
 
             <h2>{{panelMessage}}</h2>
 
-            <div class="device" ng-repeat="(name, value) in devices | ignoreKey: deviceIgnoreList">
+            <div class="device {{parseStatus(value.status.value)}}" ng-repeat="(name, value) in devices | ignoreKey: deviceIgnoreList">
+
                 <h5>{{name}}</h5>
 
                 <div ng-repeat="(varName, value) in value | ignoreKey: deviceVarIgnoreList " class="{{value.type}}">
-                    <p><span>{{spaceCamelCase(varName)}}: </span> {{value.description}}</p>
+                    <p>
+                        <span>{{spaceCamelCase(varName)}}: </span> {{value.description}}
+                    </p>
                 </div>
 
             </div>

@@ -354,10 +354,28 @@ section{
       overflow: auto;
       background: $panel-device-bg;
 
+      &.off h5:after, &.on h5:after{
+        content: "";
+        display: inline-block;
+        position: absolute;
+        right: 8px;
+        top: 2px;
+        width: 8px;
+        height: 8px;
+        border-radius: 4px;
+        background: #c33837;
+        box-shadow: 0 0 10px #c33837;
+      }
+
+      &.on h5:after{
+        background: #3f803b;
+        box-shadow: 0 0 4px #3f803b;
+      }
 
       h5{
         font-size: $panel-device-name-fs;
         border-bottom: 1px solid #8e8e8e;
+        position: relative;
         padding: 4px auto;
         margin: 4px auto;
         clear: both;
