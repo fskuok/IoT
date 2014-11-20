@@ -354,7 +354,7 @@ section{
       overflow: auto;
       background: $panel-device-bg;
 
-      &.off h5:after, &.on h5:after{
+      &.off div.header:after, &.on div.header:after{
         content: "";
         display: inline-block;
         position: absolute;
@@ -367,18 +367,34 @@ section{
         box-shadow: 0 0 10px #c33837;
       }
 
-      &.on h5:after{
+      &.on div.header:after{
         background: #3f803b;
         box-shadow: 0 0 4px #3f803b;
       }
 
-      h5{
-        font-size: $panel-device-name-fs;
+      div.header{
         border-bottom: 1px solid #8e8e8e;
         position: relative;
-        padding: 4px auto;
-        margin: 4px auto;
-        clear: both;
+
+        h5{
+          font-size: $panel-device-name-fs;
+          line-height: 32px;
+          display: inline-block;
+          position: relative;
+          margin: 4px auto;
+          clear: both;
+        }
+
+        input{
+          position: absolute;
+          right: 24px;
+          top: 3px;
+          height: 22px;
+          width: 22px;
+          border: 1px solid white;
+          border-radius: 0;
+          background: $panel-device-bg;
+        }
       }
 
       div.variable{
@@ -386,16 +402,18 @@ section{
         clear: left;
         width: 50%;
 
-        p{
+        span.name{
+          color: $device-var-name-color;
+          font-size: $panel-device-var-name-fs;
+          font-weight: 300;
+        }
+
+        span.description{
           font-size: $panel-device-var-description-fs;
           padding: 3px 0;
 
-          span{
-            color: $device-var-name-color;
-            font-size: $panel-device-var-name-fs;
-            font-weight: 300;
-          }
         }
+
 
       }
 
@@ -404,10 +422,13 @@ section{
         float: right;
         clear: right;
 
-        p{
-          span{
-            color: $device-fn-name-color;
-          }
+
+        span.name{
+          color: $device-fn-name-color;
+        }
+
+        span.description{
+
         }
       }
     }

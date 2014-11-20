@@ -270,7 +270,7 @@ section {
       margin: 10px auto;
       overflow: auto;
       background: #333333; }
-      section section.panel div.device.off h5:after, section section.panel div.device.on h5:after {
+      section section.panel div.device.off div.header:after, section section.panel div.device.on div.header:after {
         content: "";
         display: inline-block;
         position: absolute;
@@ -280,30 +280,42 @@ section {
         height: 8px;
         border-radius: 4px;
         background: #c33837;
-        box-shadow: 0 0 1px #c33837; }
-      section section.panel div.device.on h5:after {
+        box-shadow: 0 0 10px #c33837; }
+      section section.panel div.device.on div.header:after {
         background: #3f803b;
         box-shadow: 0 0 4px #3f803b; }
-      section section.panel div.device h5 {
-        font-size: 20px;
+      section section.panel div.device div.header {
         border-bottom: 1px solid #8e8e8e;
-        position: relative;
-        padding: 4px auto;
-        margin: 4px auto;
-        clear: both; }
+        position: relative; }
+        section section.panel div.device div.header h5 {
+          font-size: 20px;
+          line-height: 32px;
+          display: inline-block;
+          position: relative;
+          margin: 4px auto;
+          clear: both; }
+        section section.panel div.device div.header input {
+          position: absolute;
+          right: 24px;
+          top: 3px;
+          height: 22px;
+          width: 22px;
+          border: 1px solid white;
+          border-radius: 0;
+          background: #333333; }
       section section.panel div.device div.variable, section section.panel div.device div.function {
         float: left;
         clear: left;
         width: 50%; }
-        section section.panel div.device div.variable p, section section.panel div.device div.function p {
+        section section.panel div.device div.variable span.name, section section.panel div.device div.function span.name {
+          color: #da97e7;
+          font-size: 16px;
+          font-weight: 300; }
+        section section.panel div.device div.variable span.description, section section.panel div.device div.function span.description {
           font-size: 16px;
           padding: 3px 0; }
-          section section.panel div.device div.variable p span, section section.panel div.device div.function p span {
-            color: #da97e7;
-            font-size: 16px;
-            font-weight: 300; }
       section section.panel div.device div.function {
         float: right;
         clear: right; }
-        section section.panel div.device div.function p span {
+        section section.panel div.device div.function span.name {
           color: #c8de6a; }

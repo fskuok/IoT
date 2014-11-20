@@ -23,6 +23,22 @@
     //agendaApp BEGIN
         agendaApp = angular.module('agendaApp', [])
 
+
+            //used for panel, filter properties that are not shown
+            .filter('ignoreKey', function(){
+                var a = ',';
+
+                return function(input, ignoredKey){
+                    var newObj = {};
+                    for(var key in input){
+                        if( input.hasOwnProperty(key) && !(ignoredKey).match(key+a) ){
+                            newObj[key] = input[key];
+                        }
+                    }
+                    return newObj;
+                }
+            })
+
             //using tabletop.js (https://github.com/jsoma/tabletop)
             //to fetch data form google spreadsheet
             .factory('tableTop', function(){
@@ -49,15 +65,17 @@
                         getVar: getVar,
                         triggerFn: callFn,
                         updateVars: updateVars,
-                        parseStatus: parseStatus,
-                        toggleVarUpdate: toggleVarUpdate,
-                        turnOnVarUpdate: turnOnVarUpdate,
-                        turnOffVarUpdate: turnOffVarUpdate
+                        parseStatus: parseStatus //,
+                        //toggleVarUpdate: toggleVarUpdate,
+                        //turnOnVarUpdate: turnOnVarUpdate,
+                        //turnOffVarUpdate: turnOffVarUpdate
                     };
 
                 function _getUrl(deviceKey, varName){
-                    if( !deviceKey || !varName )
-                        throw new Error('Get Spark Url Error: [deviceKey]: ', deviceKey, '[varName]: ', varName);
+
+                    if( !deviceKey || !varName ){
+                        //throw new Error('Get Spark Url Error: [deviceKey]: ', deviceKey, '[varName]: ', varName);
+                    }
 
                     return  "https://api.spark.io/v1/devices/" + deviceKey + "/" +  varName + "?access_token=" + spark.deviceInfo["Spark Cloud"].key;
 
@@ -83,14 +101,36 @@
                         }
                 }
 
+
+
                 function getVar(deviceName, varName, onSuccess){
+                    //if key not specified, return
+                    if( !spark.deviceInfo[ deviceName ].key ) return undefined;
+
                     $http
                         .get( _getUrl( spark.deviceInfo[ deviceName ].key, varName ) )
                         .success( function(data){
-                            console.log(data);
-                            spark.deviceInfo[ deviceName ][ varName ].value = data.result;
+                            spark.deviceInfo[ deviceName ][ varName ].value = data.result || 0;
                             spark.deviceInfo[ deviceName ][ varName ].updateTimestamp = (new Date()).getTime();
                             if(onSuccess) onSuccess(data);
+                        })
+                        .error(function(err){
+                            console.log(err);
+
+                            if(err == "Not Found"){
+
+                            }
+
+                            //typeof null is also "object"
+                            if(err && typeof err === "object"){
+                                switch (err.error) {
+                                    case "Variable not found":
+                                    case "Timed out.":
+                                    default :
+                                }
+
+                            }
+
                         });
 
                 }
@@ -106,43 +146,46 @@
 
                 //update var
                 function updateVars(){
-                    var deviceName, varName, device, variable;
+                    var deviceName, varName, device;
 
-                    //loop every device
+                    //loop every devices
                     for( deviceName in spark.deviceInfo ){
 
-                        //
                         if( spark.deviceInfo.hasOwnProperty( deviceName )
                             && deviceName !== "Spark Cloud" ){
 
                             device = spark.deviceInfo[ deviceName ];
 
-                            //get the status first
-                            device.status.get();
 
-                            //get rest of variables if the device is connected
-                            if( device.status ){
+                            // get variables
+                            // if the device has a key (d
+                            // and the connection is allowed (device.status.autoUpdate = true)
+
+                            if( device.key && device.status.autoUpdate === true ){
 
                                 //loop every var
                                 for( varName in device ){
 
                                     if( device.hasOwnProperty(varName)
-                                        && varName !== "status"){
+                                        && device[ varName ].type === 'variable'
+                                        && device[ varName ].autoUpdate === true){
 
-                                        variable = device[varName];
-
-                                        //for only variable that autoUpdate property is set to true
-                                        if( variable.type === 'variable'
-                                            && variable.autoUpdate === true )
-                                            spark.deviceInfo[ varName ].get();
+                                        device[varName].get();
 
                                     }
                                 }
+                            }else if(device.status.autoUpdate === false){
+                                device.status.value = 0;
                             }
                         }
                     }
                 }
 
+                /*************************************************************************
+                 *
+                 *
+                 *
+                 *
 
                 function toggleVarUpdate(deviceName, varName, value){
                     if( spark.deviceInfo[ deviceName ]
@@ -163,6 +206,9 @@
                     toggleVarUpdate(deviceName, varName, 'off');
                 }
 
+                **************************************************************************/
+
+
                 function parseStatus(status){
                     if(status == 1){
                         return 'on'
@@ -171,61 +217,60 @@
                     }
                 }
 
-                //fetch and parse spark data
-                (function getSparkData(){
-                    tableTop.get(app_data.google_spreadsheet.spark_data_key, function(data){
-                        var deviceName, i, j, device;
+                function parseSparkData(data){
+                    var i, j, device;
 
-                        //reorganize spark data, device by device
-                        for(i in data){
+                    //reorganize spark data, device by device
+                    for(i in data){
 
-                            if( data.hasOwnProperty(i) ){
+                        if( data.hasOwnProperty(i) ){
 
-                                device = {};
+                            device = {};
 
-                                j = 1;
+                            j = 1;
 
-                                device.key = data[i].key;
-                                device.getVar = _varGetter(device.key);
-                                device.callFn = _fnCaller(device.key);
+                            device.key = data[i].key;
+                            device.getVar = _varGetter(device.key);
+                            device.callFn = _fnCaller(device.key);
 
-                                while(true){
-                                    //mindful of the ++ and break
-                                    if( data[ i ][ 'var'+j] )
-                                        device[ data[ i ][ 'var'+j ] ] = {
-                                            type : 'variable',
-                                            description: data[ i ][ 'var'+ j + 'description' ],
-                                            value : undefined,
-                                            autoUpdate: false,
-                                            updateTimestamp: undefined,
-                                            get: _varGetter( data[ i ].name, data[ i ][ 'var'+j++ ])
-                                        };
-                                    else break;
-                                }
-
-                                j = 1;
-
-                                while(true){
-                                    //mindful of the ++ and break
-                                    if(data[ i ]['fn'+j])
-                                        device[ data[ i ][ 'fn'+j ] ] = {
-                                            type : 'function',
-                                            description: data[ i ][ 'fn'+ j + 'description' ],
-                                            value : undefined,
-                                            call: _fnCaller( data[ i ].name, data[ i][ 'fn'+j++ ])
-                                        };
-                                    else break;
-                                }
-
-                                spark.deviceInfo[ data[ i ].name ] = device;
+                            while(true){
+                                //mindful of the ++ and break
+                                if( data[ i ][ 'var'+j] )
+                                    device[ data[ i ][ 'var'+j ] ] = {
+                                        type : 'variable',
+                                        description: data[ i ][ 'var'+ j + 'description' ],
+                                        value : undefined,
+                                        autoUpdate: false,
+                                        updateTimestamp: undefined,
+                                        get: _varGetter( data[ i ].name, data[ i ][ 'var'+j++ ])
+                                    };
+                                else break;
                             }
 
+                            j = 1;
+
+                            while(true){
+                                //mindful of the ++ and break
+                                if(data[ i ]['fn'+j])
+                                    device[ data[ i ][ 'fn'+j ] ] = {
+                                        type : 'function',
+                                        description: data[ i ][ 'fn'+ j + 'description' ],
+                                        value : undefined,
+                                        call: _fnCaller( data[ i ].name, data[ i][ 'fn'+j++ ])
+                                    };
+                                else break;
+                            }
+
+                            spark.deviceInfo[ data[ i ].name ] = device;
                         }
 
-                        console.log('spark data fetched successfully', spark.deviceInfo);
+                    }
 
-                    });
-                })();
+                    console.log('spark data fetched successfully', spark.deviceInfo);
+                }
+
+                //fetch and parse spark data
+                tableTop.get(app_data.google_spreadsheet.spark_data_key, parseSparkData);
 
 
 
@@ -341,25 +386,13 @@
                 }
             })
 
-            //used for panel, filter properties that are not shown
-            .filter('ignoreKey', function(){
-                var a = ',';
 
-                return function(input, ignoredKey){
-                    var newObj = {};
-                    for(var key in input){
-                        if( input.hasOwnProperty(key) && !(ignoredKey).match(key+a) ){
-                            newObj[key] = input[key];
-                        }
-                    }
-                    return newObj;
-                }
-            })
 
             .controller('agendaCtrl',
 
-                ['$scope', 'tableTop', 'dom', 'time', 'spark',
-                    function( $scope, tableTop, dom, time, spark){
+                ['$scope', '$interval', 'tableTop', 'dom', 'time', 'spark',
+                    function( $scope, $interval, tableTop, dom, time, spark){
+                        var refreshPromise, refreshInterval = 1000;
 
                         $scope.panelMessage = 'Loading...';
 
@@ -414,9 +447,7 @@
 
                             //refresh time and set refreshing every second
                             refresh();
-                            setInterval(function(){
-                                $scope.$apply(refresh);
-                            }, 1000);
+                            refreshPromise = $interval(refresh, refreshInterval);
 
                             //fetch agenda data
                             tableTop.get( app_data.google_spreadsheet.agenda_data_key, function(data) {
@@ -464,11 +495,25 @@
 
                             });
 
+                        }
 
+                        function refresh(){
+                            refreshTime();
+                            refreshSpark();
+                        }
+
+                        //Refresh spark status
+                        function refreshSpark(){
+
+                            //make sure spark info is fetched
+                            if(spark.deviceInfo["Spark Cloud"]){
+
+                                spark.updateVars();
+                            }
                         }
 
                         //Refresh time for the clock
-                        function refresh(){
+                        function refreshTime(){
                             $scope.time.dateObj = new Date();
 
                             //refresh the clock
@@ -482,9 +527,7 @@
                                     _2d($scope.time.dateObj.getSeconds());
 
 
-                            if(spark.deviceInfo.key){
-                                spark.updateVars();
-                            }
+
 
                             if($scope.meeting.status === 'now'){
 

@@ -23,8 +23,8 @@
 				<p class="date">{{date()}}</p>
 				<p class="clock">
 					<span class="hour">{{time.hour}}</span> : 
-					<span class="min">{{time.min}}</span> <!--:
-					<span class="sec">{{time.sec}}</span>-->
+					<span class="min">{{time.min}}</span> :
+					<span class="sec">{{time.sec}}</span>
 				</p>
 			</div>
 			
@@ -85,12 +85,19 @@
 
             <div class="device {{parseStatus(value.status.value)}}" ng-repeat="(name, value) in devices | ignoreKey: deviceIgnoreList">
 
-                <h5>{{name}}</h5>
+                <div class="header">
+                    <h5>{{name}}</h5><input type="checkbox" ng-model="value.status.autoUpdate"/>
+                </div>
+
 
                 <div ng-repeat="(varName, value) in value | ignoreKey: deviceVarIgnoreList " class="{{value.type}}">
-                    <p>
-                        <span>{{spaceCamelCase(varName)}}: </span> {{value.description}}
-                    </p>
+
+                    <input type="checkbox" ng-model="value.autoUpdate"/>
+                    <span class="value value.autoUpdate">[{{value.value}}]</span>
+                    <span class="name">{{spaceCamelCase(varName)}}</span>
+                    <span class="description">{{value.description}}</span>
+
+
                 </div>
 
             </div>
