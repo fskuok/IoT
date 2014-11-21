@@ -1,27 +1,42 @@
 @charset "UTF-8";
 /***********************
 
+          Z-INDEX
+
+************************/
+/***********************
+
           COLOR
 
 ************************/
-/* BACKGROUND COLOR */
-/* FONT COLOR */
+/* BACKGROUND */
+/* FONT */
+/* OTHER */
 /***********************
 
        DIMENSIONS
 
 ************************/
+/* BOX MODEL */
+/* aside */
 /* aside right not in use anymore*/
-/* SIZE */
-/* ICON SIZE */
-/* FONT SIZE*/
-/* CIRCLE SIZE */
+/* events */
+/* circle */
+/* panel */
+/* agenda */
+/* device */
+/*variable*/
+/* var */
+/* ICONS */
+/* FONTS */
+/*agenda*/
+/*panel*/
 * {
   margin: 0;
   padding: 0;
   font-family: 'Helvetica Neue' , sans-serif;
   color: white;
-  font-weight: 100; }
+  font-weight: 150; }
 
 html, body {
   height: 100%;
@@ -46,7 +61,7 @@ html, body {
     background-size: contain;
     height: 100%; }
 
-button {
+button.panel {
   height: 40px;
   width: 40px;
   border: 1px solid white;
@@ -80,6 +95,7 @@ section {
   height: 100%;
   background: url("../img/artistic-photography-317486 copy.jpg");
   background-size: cover;
+  /* timeline */
   /******************************************** Event ********************************************/
   /*----------------------------------------------- Event END -----------------------------------------------*/
   /************************************************** Panel **************************************************/ }
@@ -133,14 +149,22 @@ section {
     right: 0;
     z-index: 80;
     box-shadow: 0 0 10px black; }
+  section:after {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 34px;
+    height: 100%;
+    width: 2px;
+    background: white;
+    z-index: 0; }
   section div.events {
     position: relative;
+    top: 300px;
     height: 100%;
-    width: 100%;
-    /* timeline */ }
+    width: 100%; }
     section div.events div.event {
       position: relative;
-      top: 300px;
       height: 120px;
       width: 100%;
       margin: 0 0 10px;
@@ -240,73 +264,76 @@ section {
         color: white; }
         section div.events div.event.now div.right figure.circle {
           background: white; }
-    section div.events:after {
-      content: "";
-      position: absolute;
-      top: 0;
-      right: 34px;
-      height: 100%;
-      width: 2px;
-      background: white;
-      z-index: 0; }
   section section.panel {
     position: fixed;
     top: 0;
     left: 0;
     z-index: 100;
-    padding: 8%;
-    height: 84%;
-    width: 84%;
+    height: 88%;
+    width: 88%;
+    padding: 6% 6%;
     background: rgba(0, 0, 0, 0.9);
     color: white; }
     section section.panel h2 {
       text-align: center;
-      font-size: 64px;
+      font-size: 48px;
       padding-bottom: 24px;
       border-bottom: 2px solid white; }
     section section.panel div.device {
       width: 96%;
-      padding: 10px 2%;
+      padding: 10px 1%;
       margin: 10px auto;
       overflow: auto;
       background: #333333; }
       section section.panel div.device.off div.header:after, section section.panel div.device.on div.header:after {
         content: "";
-        display: inline-block;
+        display: block;
         position: absolute;
-        right: 8px;
-        top: 2px;
-        width: 8px;
-        height: 8px;
-        border-radius: 4px;
-        background: #c33837;
-        box-shadow: 0 0 10px #c33837; }
+        right: 0px;
+        top: 4.5px;
+        width: 12px;
+        height: 12px;
+        border-radius: 2px;
+        background: #ff4343;
+        box-shadow: 0 0 4px #ff4343; }
       section section.panel div.device.on div.header:after {
-        background: #3f803b;
-        box-shadow: 0 0 4px #3f803b; }
+        background: #33ff3b;
+        box-shadow: 0 0 4px #33ff3b; }
       section section.panel div.device div.header {
-        border-bottom: 1px solid #8e8e8e;
-        position: relative; }
+        position: relative;
+        height: 30px;
+        margin: 0 0 10px 0;
+        border-bottom: 1px solid white; }
         section section.panel div.device div.header h5 {
+          clear: both;
           font-size: 20px;
-          line-height: 32px;
-          display: inline-block;
-          position: relative;
-          margin: 4px auto;
-          clear: both; }
+          line-height: 30px;
+          height: 30px;
+          position: relative; }
         section section.panel div.device div.header input {
           position: absolute;
-          right: 24px;
-          top: 3px;
-          height: 22px;
-          width: 22px;
+          right: 14px;
+          top: 4px;
           border: 1px solid white;
           border-radius: 0;
           background: #333333; }
       section section.panel div.device div.variable, section section.panel div.device div.function {
         float: left;
         clear: left;
-        width: 50%; }
+        width: 50%;
+        height: 22px;
+        margin: 2px 0;
+        font-size: 16px; }
+        section section.panel div.device div.variable span.value, section section.panel div.device div.function span.value {
+          width: 40px;
+          height: 20px;
+          display: inline-block;
+          text-align: center;
+          border: 1px solid white;
+          border-radius: 4px; }
+        section section.panel div.device div.variable span.value.true, section section.panel div.device div.function span.value.true {
+          border: 1px solid #33ff3b;
+          color: #33ff3b; }
         section section.panel div.device div.variable span.name, section section.panel div.device div.function span.name {
           color: #da97e7;
           font-size: 16px;
@@ -317,5 +344,26 @@ section {
       section section.panel div.device div.function {
         float: right;
         clear: right; }
+        section section.panel div.device div.function input[type=text] {
+          background: #333333;
+          border: 1px solid white;
+          width: 40px;
+          text-align: center;
+          height: 20px;
+          border-radius: 4px 0 0 4px; }
+        section section.panel div.device div.function button {
+          background: #333333;
+          border: 1px solid white;
+          height: 22px;
+          padding: 0 4px;
+          border-radius: 0 4px 4px 0;
+          position: relative;
+          left: -6px; }
+          section section.panel div.device div.function button:hover {
+            border-color: #33ff3b;
+            cursor: pointer;
+            color: #33ff3b; }
+        section section.panel div.device div.function span.value {
+          display: none; }
         section section.panel div.device div.function span.name {
           color: #c8de6a; }

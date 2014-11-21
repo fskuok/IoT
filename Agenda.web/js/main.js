@@ -104,6 +104,8 @@
 
 
                 function getVar(deviceName, varName, onSuccess){
+
+
                     //if key not specified, return
                     if( !spark.deviceInfo[ deviceName ].key ) return undefined;
 
@@ -115,7 +117,6 @@
                             if(onSuccess) onSuccess(data);
                         })
                         .error(function(err){
-                            console.log(err);
 
                             if(err == "Not Found"){
 
@@ -166,15 +167,15 @@
                                 //loop every var
                                 for( varName in device ){
 
-                                    if( device.hasOwnProperty(varName)
+                                    if( device.hasOwnProperty( varName )
                                         && device[ varName ].type === 'variable'
-                                        && device[ varName ].autoUpdate === true){
+                                        && device[ varName ].autoUpdate === true ){
 
                                         device[varName].get();
 
                                     }
                                 }
-                            }else if(device.status.autoUpdate === false){
+                            }else if( device.status.autoUpdate === false ){
                                 device.status.value = 0;
                             }
                         }
@@ -230,8 +231,8 @@
                             j = 1;
 
                             device.key = data[i].key;
-                            device.getVar = _varGetter(device.key);
-                            device.callFn = _fnCaller(device.key);
+                            device.getVar = _varGetter( device.key );
+                            device.callFn = _fnCaller( device.key );
 
                             while(true){
                                 //mindful of the ++ and break
@@ -241,6 +242,7 @@
                                         description: data[ i ][ 'var'+ j + 'description' ],
                                         value : undefined,
                                         autoUpdate: false,
+                                        callbackCheck: undefined,
                                         updateTimestamp: undefined,
                                         get: _varGetter( data[ i ].name, data[ i ][ 'var'+j++ ])
                                     };
@@ -303,15 +305,15 @@
 
                 function getEventsTop(){
                     if(!this.initTop)
-                    this.initTop = parseInt(
-                            getComputedStyle(
-                                document.querySelector( 'div.event:first-of-type' )
-                            ).top);
+                        this.initTop = parseInt(
+                                getComputedStyle(
+                                    document.querySelector( 'div.events' )
+                                ).top);
                 }
 
                 function scrollTo(n) {
                     n = n || 0;
-                    $('div.event').css('top', ( dom.events.initTop || 0 ) - 130*n);
+                    document.querySelector('div.events').style.top = ( ( dom.events.initTop || 0 ) - 130*n ) + "px";
                 }
 
                 dom = {
@@ -347,8 +349,16 @@
                     d.setHours( h || 0 );
                     d.setMinutes( m || 0 );
                     d.setSeconds( s || 0 );
+                    d.setMilliseconds(0);
 
                     return d;
+                }
+                function getShiftedDate(date, h, m, s){
+                    if(!(date instanceof Date)) return undefined;
+                    h = h || 0;
+                    m = m || 0;
+                    s = s || 0;
+                    return new Date(date.getTime() + (h * 60 * 60 + m * 60 + s ) * 1000);
                 }
 
                 //return the formatted current date
@@ -381,6 +391,7 @@
                 return {
                     duration: duration,
                     getDate: getDate,
+                    getShiftedDate: getShiftedDate,
                     percentage: percentage,
                     date: date
                 }
@@ -395,6 +406,8 @@
                         var refreshPromise, refreshInterval = 1000;
 
                         $scope.panelMessage = 'Loading...';
+                        $scope.listeners = {};
+
 
                         //data of the whole meeting
                         //initiated in init()
@@ -438,6 +451,9 @@
                         $scope.parseStatus = spark.parseStatus;
                         //put in an anonymous function to prevent angular dom error
                         $scope.togglePanel = function(){ dom.panel.toggle(); };
+                        $scope.triggerFn = function(deviceName, fnName, args){
+                            spark.deviceInfo[deviceName][fnName].call(args)
+                        };
 
                         //expose to global for debugging
                         window.spa = spark;
@@ -447,10 +463,13 @@
 
                             //refresh time and set refreshing every second
                             refresh();
+
+
                             refreshPromise = $interval(refresh, refreshInterval);
 
                             //fetch agenda data
                             tableTop.get( app_data.google_spreadsheet.agenda_data_key, function(data) {
+
 
                                 $scope.$apply( function() {
 
@@ -461,33 +480,118 @@
                                     $scope.events = data;
 
                                     //adjust panel according to meeting is not started, ongoing or ended
-                                    switch ( $scope.isOn(  $scope.meeting.startDate, $scope.meeting.endDate )){
+                                    (function adjustPanel(){
+                                        switch ( $scope.isOn(  $scope.meeting.startDate, $scope.meeting.endDate )){
 
-                                        case 'now' :
-                                            $scope.meeting.status = 'now';
+                                            case 'now' :
 
-                                            //has a delay for dom to ready
-                                            setTimeout(function(){
-                                                dom.panel.off();
-                                            },500);
+                                                $scope.meeting.status = 'now';
 
-                                            $scope.panelMessage = app_data.panel.meeting_messages[1];
-                                            break;
+                                                //has a delay for dom to ready
+                                                setTimeout(function(){ dom.panel.off(); }, 500);
 
-                                        case 'before':
-                                            $scope.meeting.status = 'ended';
-                                            dom.panel.on();
-                                            $scope.panelMessage = app_data.panel.meeting_messages[2];
-                                            break;
+                                                $scope.panelMessage = app_data.panel.meeting_messages[1];
+                                                break;
 
-                                        case 'after':
-                                            $scope.meeting.status = 'uninitiated';
-                                            dom.panel.on();
-                                            $scope.panelMessage = app_data.panel.meeting_messages[0];
+                                            case 'before':
+
+                                                $scope.meeting.status = 'ended';
+                                                dom.panel.on();
+                                                $scope.panelMessage = app_data.panel.meeting_messages[2];
+                                                break;
+
+                                            case 'after':
+                                                $scope.meeting.status = 'uninitiated';
+                                                dom.panel.on();
+                                                $scope.panelMessage = app_data.panel.meeting_messages[0];
+
+                                        }
+                                    })();
+
+
+                                });
+
+                                $scope.listeners.time = {};
+
+                                var i, event, startStamp, endStamp, start, end, buffer,
+                                    turnOnLight = function(){
+                                        spark.deviceInfo[ "Lights / Projector / Whiteboard" ].lightsOn.call('1')
+                                    },
+                                    turnOffLight = function(){
+                                        spark.deviceInfo[ "Lights / Projector / Whiteboard" ].lightsOn.call('0')
+                                    },
+                                    turnOnProjector = function(){
+                                        spark.deviceInfo[ "Lights / Projector / Whiteboard" ].projectorOn.call('1')
+                                    },
+                                    turnOffProjector = function(){
+                                        spark.deviceInfo[ "Lights / Projector / Whiteboard" ].projectorOn.call('0')
+                                    };
+
+
+
+                                for(i = 0; i < data.length; i++){
+
+
+                                    event = data[i];
+                                    start = time.getDate( data[i].start.split(':') );
+                                    startStamp = start.getTime();
+                                    end = time.getDate( data[i].end.split(':') );
+                                    endStamp = end.getTime();
+
+                                    if( i === 0 ){
 
                                     }
 
-                                });
+                                    if( i === data.length - 1 ){
+
+                                    }
+
+                                    if(event.type === "break"){
+
+                                        buffer = time.getShiftedDate(start, 0, 0, 0).getTime();
+
+                                        if($scope.listeners.time[buffer]){
+                                            $scope.listeners.time[buffer].push( turnOnLight );
+                                            $scope.listeners.time[buffer].push( turnOnProjector );
+                                        }else{
+                                            $scope.listeners.time[buffer] = [ turnOnLight, turnOnProjector ];
+                                        }
+
+                                        buffer = time.getShiftedDate(end, 0, 0, 0).getTime();
+
+                                        if($scope.listeners.time[buffer]){
+                                            $scope.listeners.time[buffer].push( turnOffLight );
+                                        }else{
+                                            $scope.listeners.time[buffer] = [ turnOffLight];
+                                        }
+                                    }
+
+
+                                    if(event.type === "presentation"){
+                                        buffer = time.getShiftedDate(start, 0, 0, 0).getTime();
+
+                                        if($scope.listeners.time[buffer]){
+                                            $scope.listeners.time[buffer].push( turnOffLight );
+                                            $scope.listeners.time[buffer].push( turnOnProjector )
+                                        }else{
+                                            $scope.listeners.time[buffer] = [ turnOffLight, turnOnProjector ];
+                                        }
+
+                                    }
+
+                                    if(event.type === "speech"){
+                                        buffer = time.getShiftedDate(start, 0, 0, 0).getTime();
+
+                                        if($scope.listeners.time[buffer]){
+                                            $scope.listeners.time[buffer].push( turnOnLight );
+                                            $scope.listeners.time[buffer].push( turnOffProjector );
+                                        }else{
+                                            $scope.listeners.time[buffer] = [ turnOnLight, turnOffProjector ];
+                                        }
+
+                                    }
+                                }
+
 
                                 dom.events.getEventsTop();
 
@@ -500,6 +604,24 @@
                         function refresh(){
                             refreshTime();
                             refreshSpark();
+                            if($scope.listeners.time) timeWatcher();
+
+                        }
+
+
+
+                        function timeWatcher(){
+                            //console.log($scope.time.dateObj.getTime());
+                            var i, stack = $scope.listeners.time[ $scope.time.dateObj.getTime() ];
+                            if( stack ){
+                                console.log('a');
+                                for(i in stack){
+                                    if( stack.hasOwnProperty(i) ){
+                                        console.log(i);
+                                        stack[i]();
+                                    }
+                                }
+                            }
                         }
 
                         //Refresh spark status
@@ -512,21 +634,21 @@
                             }
                         }
 
+
                         //Refresh time for the clock
                         function refreshTime(){
+
+
+
                             $scope.time.dateObj = new Date();
+                            $scope.time.dateObj.setMilliseconds(0);
 
                             //refresh the clock
-                            $scope.time.hour =
-                                    _2d($scope.time.dateObj.getHours());
+                            $scope.time.hour = _2d( $scope.time.dateObj.getHours() );
 
-                            $scope.time.min =
-                                    _2d($scope.time.dateObj.getMinutes());
+                            $scope.time.min = _2d( $scope.time.dateObj.getMinutes() );
 
-                            $scope.time.sec =
-                                    _2d($scope.time.dateObj.getSeconds());
-
-
+                            $scope.time.sec = _2d( $scope.time.dateObj.getSeconds() );
 
 
                             if($scope.meeting.status === 'now'){
@@ -548,6 +670,8 @@
                                 //refresh panel message with how long later will the meeting begin
                                 $scope.panelMessage = app_data.panel.meeting_messages[0] + ' after ' +
                                                     time.duration( $scope.time.dateObj, $scope.meeting.startDate ).join( ':' );
+
+
 
                         }
 

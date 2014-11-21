@@ -5,6 +5,12 @@
   border: 1px solid white;
 }
 
+
+/***********************
+
+          Z-INDEX
+
+************************/
 $events-z: 10;
 $aside-z: 80;
 $timeline-z: 0;
@@ -18,31 +24,33 @@ $panel-z: 100;
 
 ************************/
 
-/* BACKGROUND COLOR */
+/* BACKGROUND */
 
-$aside-bg: #2f2f2f;
-$aside-ongoing-bg: #ff6450;
+  $aside-bg: #2f2f2f;
+  $aside-ongoing-bg: #ff6450;
 
-$main-bg: url('../img/artistic-photography-317486 copy.jpg');
+  $main-bg: url('../img/artistic-photography-317486 copy.jpg');
 
-$right-not-ongoing-bg: rgba(black, 0.8);
-$right-ongoing-bg: #ff6450;
-$panel-bg: rgba(black, 0.9);
-$panel-device-bg: #333333;
-
-
-
-/* FONT COLOR */
-$right-not-ongoing-color: #c0c0c0;
-$right-ongoing-color: white;
-$device-var-name-color: #da97e7;
-$device-fn-name-color: #c8de6a;
+  $right-not-ongoing-bg: rgba(black, 0.8);
+  $right-ongoing-bg: #ff6450;
+  $panel-bg: rgba(black, 0.9);
+  $panel-device-bg: #333333;
+  $progress-bg: url('../img/progress_v.png');
 
 
 
-$circle-color: white;
+/* FONT */
+  $right-not-ongoing-color: #c0c0c0;
+  $right-ongoing-color: white;
+  $device-var-name-color: #da97e7;
+  $device-fn-name-color: #c8de6a;
 
-$progress-bg: url('../img/progress_v.png');
+
+/* OTHER */
+  $circle-color: white;
+  $panel-on-color: #33ff3b;
+  $panel-off-color: #ff4343;
+
 
 
 
@@ -52,56 +60,99 @@ $progress-bg: url('../img/progress_v.png');
 
 ************************/
 
-$aside-left-total-width: 22%;
-$aside-right-total-width: 0; /* aside right not in use anymore*/
-$event-left-total-width: $aside-left-total-width;
+/* BOX MODEL */
 
-$now-event-top: 400px;
+  /* aside */
+  $aside-left-total-width: 22%;
+  $aside-right-total-width: 0; /* aside right not in use anymore*/
+  $event-left-total-width: $aside-left-total-width;
 
-/* SIZE */
-$aside-above-margin-tb:  20px;
-$above-now-height: 300px;
-
-
-$event-total-height: 130px;
-$event-border-bottom: 10px;
-$event-padding-tb: 10px;
-$event-left-padding-lr: 1%;
-  $event-height: $event-total-height - $event-border-bottom;
-  $event-left-height: $event-height - 2*$event-padding-tb;
-  $event-left-width: $event-left-total-width - 2 * $event-left-padding-lr;
-  $event-right-total-width: 100% - $event-left-total-width;
-  $event-right-padding-lr: $event-left-padding-lr;
-  $event-right-width: $event-right-total-width - 2 * $event-right-padding-lr;
-  $event-right-height: $event-left-height;
-
-/* ICON SIZE */
-$icon-size: 20px;
+  $now-event-top: 400px;
 
 
-/* FONT SIZE*/
+  $aside-above-margin-tb:  20px;
+  $above-now-height: 300px;
 
-$base-fs: 16px;
+  /* events */
+  $event-total-height: 130px;
+  $event-border-bottom: 10px;
+  $event-padding-tb: 10px;
+  $event-left-padding-lr: 1%;
+    $event-height: $event-total-height - $event-border-bottom;
+    $event-left-height: $event-height - 2*$event-padding-tb;
+    $event-left-width: $event-left-total-width - 2 * $event-left-padding-lr;
+    $event-right-total-width: 100% - $event-left-total-width;
+    $event-right-padding-lr: $event-left-padding-lr;
+    $event-right-width: $event-right-total-width - 2 * $event-right-padding-lr;
+    $event-right-height: $event-left-height;
 
-$tag-fs: $base-fs;
+    /* circle */
+    $event-circle-size: 30px;
+    $event-circle-stroke-width: 2px;
+    $event-circle-width: $event-circle-size - 2*$event-circle-stroke-width;
+    $event-circle-right: 20px;
+    $timeline-width: 2px;
 
-$aside-above-fs: $base-fs * 2.25;
-$aside-ongoing-fs: $base-fs * 2;
-$event-fs: $base-fs * 1.5;
-$event-2-fs: $base-fs * 1.25;
+  /* panel */
+    $panel-height: 88%;
+    $panel-width: $panel-height;
+    $panel-padding-tb: ( 100% - $panel-height ) /2;
+    $panel-padding-lr: ( 100% - $panel-width ) /2;
 
-$event-topic-fs: $base-fs * 1.75;
-$event-people-fs: $base-fs * 1.25;
+      /* agenda */
+      $panel-agenda-status-bottom: 24px;
+      $panel-agenda-border-bottom: 2px solid white;
 
-$panel-fs: $base-fs * 4;
-$panel-device-name-fs: $base-fs * 1.25;
-$panel-device-var-name-fs: $base-fs * 1;
-$panel-device-var-description-fs: $base-fs * 1;
+      /* device */
+      $panel-device-width: 98%;
+      $panel-device-padding-tb: 10px;
+      $panel-device-margin-tb: 10px;
+      $panel-device-padding-lr: ( 100% - $panel-device-width ) /2;
+
+      $panel-device-header-height: 30px;
+      $panel-device-header-margin-bottom: 10px;
 
 
-/* CIRCLE SIZE */
-$event-circle-size: 30px;
-$event-circle-stroke-width: 2px;
-$event-circle-width: $event-circle-size - 2*$event-circle-stroke-width;
-$event-circle-right: 20px;
-$timeline-width: 2px;
+
+      $panel-device-indication-light-size: 10px;
+      $panel-device-indication-light-border-radius: 2px;
+
+        /*variable*/
+        $panel-varfn-height: 22px;
+        $panel-varfn-margin-tb: 2px;
+
+
+        /* var */
+
+
+
+
+
+/* ICONS */
+  $icon-size: 20px;
+
+
+/* FONTS */
+
+
+  $base-fs: 16px;
+    /*agenda*/
+    $tag-fs: $base-fs;
+
+    $aside-above-fs: $base-fs * 2.25;
+    $aside-ongoing-fs: $base-fs * 2;
+    $event-fs: $base-fs * 1.5;
+    $event-2-fs: $base-fs * 1.25;
+
+    $event-topic-fs: $base-fs * 1.75;
+    $event-people-fs: $base-fs * 1.25;
+
+
+    /*panel*/
+    $panel-base-fs: $base-fs;
+    $panel-agenda-status-fs: $panel-base-fs * 3;
+    $panel-device-name-fs: $panel-base-fs * 1.25;
+    $panel-device-var-name-fs: $panel-base-fs * 1;
+    $panel-device-var-description-fs: $panel-base-fs * 1;
+
+

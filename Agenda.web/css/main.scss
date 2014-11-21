@@ -5,7 +5,7 @@
   padding: 0;
   font-family:  'Helvetica Neue' , sans-serif;
   color: white;
-  font-weight: 100;
+  font-weight: 150;
 }
 
 html, body{
@@ -38,7 +38,7 @@ html, body{
   }
 }
 
-button{
+button.panel{
   height: 40px;
   width: 40px;
   border: 1px solid white;
@@ -146,17 +146,32 @@ section{
     box-shadow: 0 0 10px black;
   }
 
+  /* timeline */
+  &:after{
+    content: "";
+    position: absolute;
+    top: 0;
+    right: $event-circle-right + ($event-circle-size - $timeline-width)/2;
+
+
+    height: 100%;
+    width: $timeline-width;
+
+    background: $circle-color;
+    z-index: $timeline-z;
+  }
+
 
 /******************************************** Event ********************************************/
   div.events{
     position: relative;
+    top: $above-now-height;
     height: 100%;
     width: 100%;
 
 
     div.event{
       position: relative;
-      top: $above-now-height;
       height: $event-height;
       width: 100%;
       margin: 0 0 $event-border-bottom;
@@ -300,20 +315,7 @@ section{
 
     }
 
-    /* timeline */
-    &:after{
-      content: "";
-      position: absolute;
-      top: 0;
-      right: $event-circle-right + ($event-circle-size - $timeline-width)/2;
 
-
-      height: 100%;
-      width: $timeline-width;
-
-      background: $circle-color;
-      z-index: $timeline-z;
-    }
   }
 
 /*----------------------------------------------- Event END -----------------------------------------------*/
@@ -332,9 +334,9 @@ section{
     left: 0;
     z-index: $panel-z;
 
-    padding: 8%;
-    height: 84%;
-    width: 84%;
+    height: $panel-height;
+    width: $panel-width;
+    padding: $panel-padding-tb $panel-padding-lr;
 
     background: $panel-bg;
 
@@ -342,55 +344,59 @@ section{
 
     h2{
       text-align: center;
-      font-size: 64px;
-      padding-bottom: 24px;
-      border-bottom: 2px solid white;
+      font-size: $panel-agenda-status-fs;
+      padding-bottom: $panel-agenda-status-bottom;
+      border-bottom: $panel-agenda-border-bottom;
     }
 
     div.device{
+
       width: 96%;
-      padding: 10px 2%;
-      margin: 10px auto;
+      padding: $panel-device-padding-tb $panel-device-padding-lr;
+      margin: $panel-device-margin-tb auto;
+
       overflow: auto;
+
       background: $panel-device-bg;
 
       &.off div.header:after, &.on div.header:after{
         content: "";
-        display: inline-block;
+        display: block;
         position: absolute;
-        right: 8px;
-        top: 2px;
-        width: 8px;
-        height: 8px;
-        border-radius: 4px;
-        background: #c33837;
-        box-shadow: 0 0 10px #c33837;
+        right: 0px;
+        top: 4.5px;
+        width: 12px;
+        height: 12px;
+        border-radius: $panel-device-indication-light-border-radius;
+        background: $panel-off-color;
+        box-shadow: 0 0 4px $panel-off-color;
       }
 
       &.on div.header:after{
-        background: #3f803b;
-        box-shadow: 0 0 4px #3f803b;
+        background: $panel-on-color;
+        box-shadow: 0 0 4px $panel-on-color;
       }
 
       div.header{
-        border-bottom: 1px solid #8e8e8e;
         position: relative;
+        height: $panel-device-header-height;
+        margin: 0 0 $panel-device-header-margin-bottom 0;
+        border-bottom: 1px solid white;
 
         h5{
-          font-size: $panel-device-name-fs;
-          line-height: 32px;
-          display: inline-block;
-          position: relative;
-          margin: 4px auto;
           clear: both;
+          font-size: $panel-device-name-fs;
+          line-height: $panel-device-header-height;
+          height: $panel-device-header-height;
+
+          position: relative;
+
         }
 
-        input{
+        input{//device connection button
           position: absolute;
-          right: 24px;
-          top: 3px;
-          height: 22px;
-          width: 22px;
+          right: 14px;
+          top: 4px;
           border: 1px solid white;
           border-radius: 0;
           background: $panel-device-bg;
@@ -401,6 +407,24 @@ section{
         float: left;
         clear: left;
         width: 50%;
+        height: $panel-varfn-height;
+        margin: $panel-varfn-margin-tb 0;
+        font-size: $panel-device-var-name-fs;
+
+        span.value{
+          width: 40px;
+          height: $panel-varfn-height - 2px;
+          display: inline-block;
+
+          text-align: center;
+          border: 1px solid white;
+          border-radius: 4px;
+        }
+
+        span.value.true{
+          border: 1px solid $panel-on-color;
+          color: $panel-on-color;
+        }
 
         span.name{
           color: $device-var-name-color;
@@ -421,6 +445,34 @@ section{
         @extend div.variable;
         float: right;
         clear: right;
+
+        input[type=text]{
+          background: $panel-device-bg;
+          border: 1px solid white;
+          width: 40px;
+          text-align: center;
+          height: $panel-varfn-height - 2px;
+          border-radius: 4px 0 0 4px;
+        }
+
+        button{
+          background: $panel-device-bg;
+          border: 1px solid white;
+          height: $panel-varfn-height;
+          padding: 0 4px;
+          border-radius: 0 4px 4px 0 ;
+          position: relative;
+          left: -6px;
+
+          &:hover{
+            border-color: $panel-on-color;
+            cursor: pointer;
+            color: $panel-on-color;
+          }
+        }
+        span.value{
+          display: none;
+        }
 
 
         span.name{

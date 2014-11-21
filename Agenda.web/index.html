@@ -91,8 +91,12 @@
 
                 <div ng-repeat="(varName, value) in value | ignoreKey: deviceVarIgnoreList " class="{{value.type}}">
 
-                    <input type="checkbox" ng-model="value.autoUpdate"/>
-                    <span class="value value.autoUpdate">[{{value.value}}]</span>
+                    <input type="checkbox" ng-model="value.autoUpdate" ng-show="value.type === 'variable'"/>
+                    <input type="text" ng-model="args" ng-show="value.type === 'function'"/>
+                    <button ng-show="value.type === 'function'" ng-click="triggerFn(name, varName, args)">Call</button>
+
+
+                    <span class="value {{value.autoUpdate}}">{{value.value || "N/A"}}</span>
                     <span class="name">{{spaceCamelCase(varName)}}</span>
                     <span class="description">{{value.description}}</span>
 
@@ -103,7 +107,7 @@
 
         </section>
 
-        <button ng-click="togglePanel()"></button>
+        <button class="panel" ng-click="togglePanel()"></button>
 	</section>
 </body>
 </html>
