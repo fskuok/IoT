@@ -455,62 +455,62 @@
                             spark.deviceInfo[deviceName][fnName].call(args)
                         };
 
-                        //expose to global for debugging
-                        window.spa = spark;
-
 
                         function init(){
 
                             //refresh time and set refreshing every second
                             refresh();
-
-
                             refreshPromise = $interval(refresh, refreshInterval);
 
                             //fetch agenda data
-                            tableTop.get( app_data.google_spreadsheet.agenda_data_key, function(data) {
+                            tableTop.get( app_data.google_spreadsheet.agenda_data_key, initAgenda);
+
+                        }
+
+                        function initAgenda(data){
 
 
-                                $scope.$apply( function() {
+                            $scope.$apply( function() {
 
-                                    $scope.meeting.startDate = time.getDate( data[0].start.split(':') );
-                                    $scope.meeting.endDate = time.getDate( data[data.length-1].end.split(':') );
+                                $scope.meeting.startDate = time.getDate( data[0].start.split(':') );
+                                $scope.meeting.endDate = time.getDate( data[data.length-1].end.split(':') );
 
-                                    //assign agenda data to Angular scope
-                                    $scope.events = data;
+                                //assign agenda data to Angular scope
+                                $scope.events = data;
 
-                                    //adjust panel according to meeting is not started, ongoing or ended
-                                    (function adjustPanel(){
-                                        switch ( $scope.isOn(  $scope.meeting.startDate, $scope.meeting.endDate )){
+                                //adjust panel according to meeting is not started, ongoing or ended
+                                (function adjustPanel(){
+                                    switch ( $scope.isOn(  $scope.meeting.startDate, $scope.meeting.endDate )){
 
-                                            case 'now' :
+                                        case 'now' :
 
-                                                $scope.meeting.status = 'now';
+                                            $scope.meeting.status = 'now';
 
-                                                //has a delay for dom to ready
-                                                setTimeout(function(){ dom.panel.off(); }, 500);
+                                            //has a delay for dom to ready
+                                            setTimeout(function(){ dom.panel.off(); }, 500);
 
-                                                $scope.panelMessage = app_data.panel.meeting_messages[1];
-                                                break;
+                                            $scope.panelMessage = app_data.panel.meeting_messages[1];
+                                            break;
 
-                                            case 'before':
+                                        case 'before':
 
-                                                $scope.meeting.status = 'ended';
-                                                dom.panel.on();
-                                                $scope.panelMessage = app_data.panel.meeting_messages[2];
-                                                break;
+                                            $scope.meeting.status = 'ended';
+                                            dom.panel.on();
+                                            $scope.panelMessage = app_data.panel.meeting_messages[2];
+                                            break;
 
-                                            case 'after':
-                                                $scope.meeting.status = 'uninitiated';
-                                                dom.panel.on();
-                                                $scope.panelMessage = app_data.panel.meeting_messages[0];
+                                        case 'after':
+                                            $scope.meeting.status = 'uninitiated';
+                                            dom.panel.on();
+                                            $scope.panelMessage = app_data.panel.meeting_messages[0];
 
-                                        }
-                                    })();
+                                    }
+                                })();
 
 
-                                });
+                            });
 
+                            function registerAgendaEvents(){
                                 $scope.listeners.time = {};
 
                                 var i, event, startStamp, endStamp, start, end, buffer,
@@ -591,14 +591,15 @@
 
                                     }
                                 }
+                            }
 
 
-                                dom.events.getEventsTop();
+                            registerAgendaEvents();
 
-                                console.log('Agenda data fetched successfully: ', $scope.events);
 
-                            });
+                            dom.events.getEventsTop();
 
+                            console.log('Agenda data fetched successfully: ', $scope.events);
                         }
 
                         function refresh(){
@@ -614,10 +615,8 @@
                             //console.log($scope.time.dateObj.getTime());
                             var i, stack = $scope.listeners.time[ $scope.time.dateObj.getTime() ];
                             if( stack ){
-                                console.log('a');
                                 for(i in stack){
                                     if( stack.hasOwnProperty(i) ){
-                                        console.log(i);
                                         stack[i]();
                                     }
                                 }
