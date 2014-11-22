@@ -7,5 +7,27 @@ app_data = {
         "ignored_devices": "Spark Cloud,",
         "ignored_vars" : "key, status, getVar, callFn,",
         "meeting_messages" : ['Meeting going to begin', 'Meeting ongoing', 'Meeting ended']
+    },
+    "rules": {
+        "type":{
+            'break':{
+                'start:0:0:0': "turnOnLight | turnOnProjector",
+                'end:0:0:0': "turnOffLight"
+            },
+            'presentation': {
+                'start:0:0:0': "turnOffLight | turnOnProjector"
+            },
+            'speech': {
+                'start:0:0:0': "turnOnLight | turnOffProjector"
+            }
+        },
+        "index": {
+            'first':{
+
+            },
+            'last':{
+
+            }
+        }
     }
 };

@@ -8,6 +8,7 @@
 	<script src="bower_components/angular/angular.js"></script>
     <script src="js/data.js"></script>
 	<script src="js/main.js"></script>
+    <script src="js/controller.js"></script>
 	<script src="js/tabletop.js"></script>
 
     <!--fonts-->
@@ -21,23 +22,24 @@
 				<p class="topic"></p>
 				<p class="date">{{date()}}</p>
 				<p class="clock">
-					<span class="hour">{{time.hour}}</span> : 
-					<span class="min">{{time.min}}</span> :
-					<span class="sec">{{time.sec}}</span>
+					<span class="hour">{{now.h | x2}}</span> :
+					<span class="min">{{now.m | x2}}</span> :
+					<span class="sec">{{now.s | x2}}</span>
 				</p>
 			</div>
 			
 			<div class="ongoing">
                 <div class="remaining">
                     <p class="tag">Remains</p>
-                    <span class="hour">{{remainingHours || '00'}}</span> :
-                    <span class="min">{{remainingMins || '00'}}</span>
+                    <span class="hour">{{nowEvent.remaining.h || '00' | x2}}</span> :
+                    <span class="min">{{nowEvent.remaining.m || '00' | x2}}</span> :
+                    <span class="min">{{nowEvent.remaining.s || '00' | x2}}</span>
                 </div>
 			</div>
 
 			<div class="below">
                 <p class="tag">Meeting progress</p>
-				<div class="progressBar"><div class="progress" style="width: {{progressPercentage}}%"></div></div>
+				<div class="progressBar"><div class="progress" style="width: {{meeting.progressPercentage}}%"></div></div>
 			</div>
 
 
@@ -46,6 +48,7 @@
         <div class="events">
 
             <div class="event {{isOn(event.start, event.end, $index)}}" ng-repeat="event in events">
+
                 <!--for future use in case-->
                 <div class="left">
 
@@ -57,7 +60,7 @@
                         <span class="icon time"></span>
                         <span class="start">{{event.start}}</span>
                         <span class="end">{{event.end}}</span>
-                        <span>{{ duration(event.start, event.end).join('H') + 'M' }}</span>
+                        <span>{{ duration(event.start, event.end).slice(0, 2).join('H') + 'M' }}</span>
 
                     </div>
 
@@ -97,7 +100,7 @@
 
 
                     <span class="value {{value.autoUpdate}}">{{value.value || "N/A"}}</span>
-                    <span class="name">{{spaceCamelCase(varName)}}</span>
+                    <span class="name">{{varName | spaceCamelCase}}</span>
                     <span class="description">{{value.description}}</span>
 
 
