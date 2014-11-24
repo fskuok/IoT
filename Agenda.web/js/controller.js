@@ -5,11 +5,12 @@
 'use strict';
 
 
-agendaApp
+angular.module('agendaControllers',['appData'])
+
     .controller('agendaCtrl',
 
-    ['$scope', '$interval', 'tableTop', 'dom', 'time', 'spark',
-        function( $scope, $interval, tableTop, dom, time, spark){
+    ['$scope', '$interval', 'app_data', 'tableTop', 'dom', 'time', 'spark',
+        function( $scope, $interval, app_data, tableTop, dom, time, spark){
             var refreshPromise, refreshInterval = 1000;
 
             $scope.panelMessage = 'Loading...';
@@ -61,7 +62,7 @@ agendaApp
             $scope.isOn = isOn;
             $scope.parseStatus = spark.parseStatus;
 
-            // put in an anonymous function to prevent angular dom error
+            // wrapped in an anonymous function to prevent angular dom error
             $scope.togglePanel = function(){ dom.panel.toggle(); };
             //
             $scope.triggerFn = function(deviceName, fnName, args){
@@ -92,33 +93,7 @@ agendaApp
                     $scope.events = data;
 
                     //adjust panel according to meeting is not started, ongoing or ended
-                    (function adjustPanel(){
-                        switch ( $scope.isOn(  $scope.meeting.startDate, $scope.meeting.endDate )){
-
-                            case 'now' :
-
-                                $scope.meeting.status = 'now';
-
-                                //has a delay for dom to ready
-                                setTimeout(function(){ dom.panel.off(); }, 500);
-
-                                $scope.panelMessage = app_data.panel.meeting_messages[1];
-                                break;
-
-                            case 'before':
-
-                                $scope.meeting.status = 'ended';
-                                dom.panel.on();
-                                $scope.panelMessage = app_data.panel.meeting_messages[2];
-                                break;
-
-                            case 'after':
-                                $scope.meeting.status = 'uninitiated';
-                                dom.panel.on();
-                                $scope.panelMessage = app_data.panel.meeting_messages[0];
-
-                        }
-                    })();
+                    adjustPanel();
 
 
                 });
@@ -137,6 +112,8 @@ agendaApp
                         registerEvent.call(data[i], i);
                     }
 
+
+
                     function registerEvent(index){
                         var thisEvent = {
                             start : time.getDate( this.start.split(':') ),
@@ -146,11 +123,11 @@ agendaApp
                         thisEvent.endStamp = thisEvent.end.getTime();
 
                         //find if there is matched rules
-                        if(rules.index[+ this.no - 1]){
-                            register(rules.index[+ this.no - 1]);
+                        if(rules.index[ + this.no - 1 ]){
+                            register( rules.index[ + this.no - 1 ] );
                         }
-                        if(rules.type[this.type]){
-                            register(rules.type[this.type]);
+                        if(rules.type[ this.type ]){
+                            register( rules.type[ this.type ] );
                         }
 
                         //register handlers in matched rules to the $scope.listeners.time object
@@ -183,7 +160,6 @@ agendaApp
 
                 registerAgendaEvents();
 
-
                 dom.events.getEventsTop();
 
                 console.log('Agenda data fetched successfully: ', $scope.events);
@@ -196,6 +172,33 @@ agendaApp
 
             }
 
+            function adjustPanel(){
+                switch ( $scope.isOn(  $scope.meeting.startDate, $scope.meeting.endDate )){
+
+                    case 'now' :
+
+                        $scope.meeting.status = 'now';
+
+                        //has a delay for dom to ready
+                        setTimeout(function(){ dom.panel.off(); }, 500);
+
+                        $scope.panelMessage = app_data.panel.meeting_messages[1];
+                        break;
+
+                    case 'before':
+
+                        $scope.meeting.status = 'ended';
+                        dom.panel.on();
+                        $scope.panelMessage = app_data.panel.meeting_messages[2];
+                        break;
+
+                    case 'after':
+                        $scope.meeting.status = 'uninitiated';
+                        dom.panel.on();
+                        $scope.panelMessage = app_data.panel.meeting_messages[0];
+
+                }
+            }
 
 
             function watcher(){

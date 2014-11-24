@@ -5,8 +5,8 @@
 'use strict';
 
 
+angular.module('agendaApp', ['appData', 'agendaControllers'])
 
-window.agendaApp = angular.module('agendaApp', [])
 
 
     //used for panel, filter properties that are not shown
@@ -26,7 +26,7 @@ window.agendaApp = angular.module('agendaApp', [])
 
     //convert 1 digit number into 2 digits string
     .filter('x2', function(){
-        return function(a){ return +a < 10 ? '0' + a : a + '';}
+        return function(a){ return +a < 10 ? '0' + (+a) : a + '';}
     })
 
     //put space between camel case words
@@ -41,7 +41,6 @@ window.agendaApp = angular.module('agendaApp', [])
                 })
         }
     })
-
 
 
     //using tabletop.js (https://github.com/jsoma/tabletop)
@@ -66,22 +65,7 @@ window.agendaApp = angular.module('agendaApp', [])
 
 
     //service that connects spark cores
-    .factory('spark', ['$http', 'tableTop', function($http, tableTop){
-
-        var handlers = {
-            turnOnLight : function(){
-                spark.deviceInfo[ "Lights / Projector / Whiteboard" ].lightsOn.call('1')
-            },
-            turnOffLight : function(){
-                spark.deviceInfo[ "Lights / Projector / Whiteboard" ].lightsOn.call('0')
-            },
-            turnOnProjector : function(){
-                spark.deviceInfo[ "Lights / Projector / Whiteboard" ].projectorOn.call('1')
-            },
-            turnOffProjector : function(){
-                spark.deviceInfo[ "Lights / Projector / Whiteboard" ].projectorOn.call('0')
-            }
-        };
+    .factory('spark', ['app_data', '$http', 'tableTop', function(app_data, $http, tableTop){
 
         var spark = {
                 deviceInfo : {},
@@ -89,8 +73,26 @@ window.agendaApp = angular.module('agendaApp', [])
                 triggerFn: callFn,
                 updateVars: updateVars,
                 parseStatus: parseStatus,
-                handlers: handlers
+                handlers: {
+                    turnOnLight: function () {
+                        spark.deviceInfo[ "Lights / Projector / Whiteboard" ].lightsOn.call('1')
+                    },
+                    turnOffLight: function () {
+                        spark.deviceInfo[ "Lights / Projector / Whiteboard" ].lightsOn.call('0')
+                    },
+                    turnOnProjector: function () {
+                        spark.deviceInfo[ "Lights / Projector / Whiteboard" ].projectorOn.call('1')
+                    },
+                    turnOffProjector: function () {
+                        spark.deviceInfo[ "Lights / Projector / Whiteboard" ].projectorOn.call('0')
+                    }
+                }
             };
+
+
+
+        //internal APIs
+
 
         function _getUrl(deviceKey, varName){
 
@@ -98,7 +100,11 @@ window.agendaApp = angular.module('agendaApp', [])
                 //throw new Error('Get Spark Url Error: [deviceKey]: ', deviceKey, '[varName]: ', varName);
             }
 
-            return  "https://api.spark.io/v1/devices/" + deviceKey + "/" +  varName + "?access_token=" + spark.deviceInfo["Spark Cloud"].key;
+            return  (
+                        "https://api.spark.io/v1/devices/" +
+                        deviceKey + "/" +  varName +  //url
+                        "?access_token=" + spark.deviceInfo["Spark Cloud"].key //query string
+                    );
 
         }
 
@@ -123,6 +129,9 @@ window.agendaApp = angular.module('agendaApp', [])
         }
 
 
+        //external APIs
+
+
         function getVar(deviceName, varName, onSuccess){
 
 
@@ -133,7 +142,7 @@ window.agendaApp = angular.module('agendaApp', [])
                 .get( _getUrl( spark.deviceInfo[ deviceName ].key, varName ) )
                 .success( function(data){
                     spark.deviceInfo[ deviceName ][ varName ].value = data.result || 0;
-                    spark.deviceInfo[ deviceName ][ varName ].updateTimestamp = (new Date()).getTime();
+                    spark.deviceInfo[ deviceName ][ varName ].updateTimestamp = ( new Date() ).getTime();
                     if(onSuccess) onSuccess(data);
                 })
                 .error(function(err){
@@ -203,11 +212,8 @@ window.agendaApp = angular.module('agendaApp', [])
         }
 
         function parseStatus(status){
-            if(status == 1){
-                return 'on'
-            }else{
-                return 'off'
-            }
+            if(status == 1) return 'on';
+            else return 'off';
         }
 
         function parseSparkData(data){
@@ -393,9 +399,9 @@ window.agendaApp = angular.module('agendaApp', [])
 
         function setHMS(date, h, m, s){
             s = s || 0;
-            date.setHours(+h);
-            date.setMinutes(+m);
-            date.setSeconds(+s);
+            date.setHours( +h );
+            date.setMinutes( +m );
+            date.setSeconds( +s );
             return date;
         }
 
