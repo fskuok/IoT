@@ -355,6 +355,11 @@ angular.module('agendaApp', ['appData', 'agendaControllers'])
 
             return d;
         }
+
+        // get a shifted Date object
+        // with passed in date object and shifting hours, minutes and seconds
+        // @param: Date, [, Number hours [, Number minutes [, Number seconds ]]]
+        // @return Date object
         function getShiftedDate(date, h, m, s){
             if(!(date instanceof Date)) return undefined;
             h = h || 0;
@@ -363,13 +368,15 @@ angular.module('agendaApp', ['appData', 'agendaControllers'])
             return new Date(date.getTime() + (h * 60 * 60 + m * 60 + s ) * 1000);
         }
 
-        //return the formatted current date
-        //@return String eg. 'Sun | Nov 16'
+        // get the formatted current date
+        // @return String eg. 'Sun | Nov 16'
         function date(){
             var arr = new Date().toString().split(' ');
             return arr[0] + ' | ' + arr[1] + ' ' + arr[2];
         }
 
+
+        // convert string or array time into a date object
         function toDate(a){
 
             if( a instanceof Date) return a;
@@ -378,33 +385,37 @@ angular.module('agendaApp', ['appData', 'agendaControllers'])
 
             return setHMS(new Date(), +a[0], +a[1], +a[2]);
         }
-        //Calculate the duration between start and end
-        //@param: String: 'xx:xx' | Date object, String: 'xx:xx' | Date object
-        //@return: Array
+
+        // Calculate the duration between start and end
+        // @param: String: 'xx:xx' | Date object, String: 'xx:xx' | Date object
+        // @return: Array
         function duration(start, end){
-            var secsTotal = Math.floor( (toDate(end) - toDate(start)) / 1000 );
+            var secsTotal = ~~( ( toDate(end) - toDate(start) ) / 1000 );
 
-
-            return [ Math.floor( secsTotal / 3600 ),
-                     Math.floor(  secsTotal % 3600 / 60 ),
-                     secsTotal%60 ]
+            return [ ~~( secsTotal / 3600 ),
+                     ~~( secsTotal % 3600 / 60 ),
+                     secsTotal % 60 ]
         }
 
         function percentage(gone, total){
-            var totalMins = total[0]*60 + total[1],
-                goneMins = gone[0]*60 + gone[1];
+            var totalMins = total[0] * 60 + total[1],
+                goneMins = gone[0] * 60 + gone[1];
             return goneMins / totalMins * 100;
         }
 
-
+        // set hours, minutes or seconds of a date object
+        // @param: Date Object, [, Number hours [, Number minutes [, Number seconds ]]]
+        // @return: Date Object
         function setHMS(date, h, m, s){
-            s = s || 0;
-            date.setHours( +h );
-            date.setMinutes( +m );
-            date.setSeconds( +s );
+            date.setHours( +h || 0);
+            date.setMinutes( +m || 0 );
+            date.setSeconds( +s || 0 );
             return date;
         }
 
+        // return a plain object contains the h, m, s of passed in date object
+        // @param: Date Object
+        // @return: Plain Object {h: , m: , s: }
         function getHMS(date){
             return {
                 h: date.getHours(),
