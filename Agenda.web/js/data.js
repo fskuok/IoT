@@ -11,12 +11,13 @@ angular.module('appData', [])
             },
             "panel": {
                 "ignored_devices": "Spark Cloud,",
-                "ignored_vars" : "key, status, getVar, callFn,",
+                "ignored_vars" : "key, status, getVar, callFn, alias,",
                 "meeting_messages" : ['Meeting going to begin', 'Meeting ongoing', 'Meeting ended']
             },
             "rules": {
                 "type":{
                     'break':{
+                        'start:0:0:-3': "brewCoffee",
                         'start:0:0:0': "turnOnLight | turnOnProjector",
                         'end:0:0:0': "turnOffLight"
                     },

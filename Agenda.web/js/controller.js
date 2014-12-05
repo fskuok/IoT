@@ -9,13 +9,14 @@ angular.module('agendaControllers',['appData'])
 
     .controller('agendaCtrl',
 
-    ['$scope', '$interval', 'app_data', 'tableTop', 'dom', 'time', 'spark',
-        function( $scope, $interval, app_data, tableTop, dom, time, spark){
-            var refreshPromise, refreshInterval = 1000;
+    ['$scope', '$interval', 'app_data', 'tableTop', 'dom', 'time', 'spark', '$filter',
+        function( $scope, $interval, app_data, tableTop, dom, time, spark, $filter){
+            var refreshPromise,
+                refreshInterval = 1000;
 
             $scope.panelMessage = 'Loading...';
             $scope.listeners = {};
-
+            $scope.startInit = false;
 
             //data of the whole meeting
             //initiated in init()
@@ -69,6 +70,32 @@ angular.module('agendaControllers',['appData'])
                 spark.deviceInfo[ deviceName ][ fnName ].call( args )
             };
 
+            var watcher = {
+                time: function(){
+
+
+
+                    var i,
+                        stack = $scope.listeners.time[ $scope.now.date.getTime() ];
+
+                    //if there are handler stack matches now time
+                    if( stack ){
+                        for( i in stack ){
+                            if( stack.hasOwnProperty(i) ){
+                                spark.handlers[ stack[i] ]();
+                            }
+                        }
+                    }
+                },
+
+                device: function(){
+                    var watchingVar;
+                    for( watchingVar in stack){
+                        if( stack.hasOwnProperty( watchingVar ) ) stack[ watchingVar ]();
+                    }
+                }
+            };
+
 
             function init(){
 
@@ -98,14 +125,13 @@ angular.module('agendaControllers',['appData'])
 
                 });
 
-                function registerAgendaEvents(){
+                (function registerAgendaEvents(){
 
                     var i,
                         timeStack = $scope.listeners.time = {},
 
                         //{ key : { value : { time and shift : [handlers] } } }
                         rules = app_data.rules;
-
 
 
                     for(i = 0; i < data.length; i++){
@@ -131,34 +157,32 @@ angular.module('agendaControllers',['appData'])
                         }
 
                         //register handlers in matched rules to the $scope.listeners.time object
-                        function register(matchedRules){
+                        function register( matchedRules ){
 
                             var shift, shiftArr, timestamp;
 
                             //for every time shift in the matched handler stack
                             for(shift in matchedRules){
 
-                                if(matchedRules.hasOwnProperty(shift)){
+                                if( matchedRules.hasOwnProperty(shift) ){
                                     shiftArr = shift.split(':');
 
                                     // get the timestamp after shifted time
-                                    timestamp = time.getShiftedDate(thisEvent[shiftArr[0]], + shiftArr[1], + shiftArr[2], + shiftArr[3])
+                                    timestamp = time.getShiftedDate( thisEvent[shiftArr[0]], + shiftArr[1], + shiftArr[2], + shiftArr[3] )
                                         .getTime();
 
                                     // if already handlers at certain timestamp, concat to the end of the array
                                     // else, create one
-                                    timeStack[timestamp] = timeStack[timestamp]
-                                        ? timeStack[timestamp].concat( matchedRules[shift].split('|') )
-                                        : matchedRules[shift].split('|') ;
+                                    timeStack[ timestamp ] = timeStack[ timestamp ]
+                                        ? timeStack[ timestamp ].concat( matchedRules[shift].split(' | ') )
+                                        : matchedRules[ shift ].split(' | ') ;
 
                                 }
                             }
                         }
                     }
-                }
+                })();
 
-
-                registerAgendaEvents();
 
                 dom.events.getEventsTop();
 
@@ -168,8 +192,6 @@ angular.module('agendaControllers',['appData'])
             function refresh(){
                 refreshTime();
                 refreshSpark();
-                if($scope.listeners.time) watcher();
-
             }
 
             function adjustPanel(){
@@ -180,7 +202,7 @@ angular.module('agendaControllers',['appData'])
                         $scope.meeting.status = 'now';
 
                         //has a delay for dom to ready
-                        setTimeout(function(){ dom.panel.off(); }, 500);
+                        setTimeout( function(){ dom.panel.off(); }, 500 );
 
                         $scope.panelMessage = app_data.panel.meeting_messages[1];
                         break;
@@ -201,28 +223,18 @@ angular.module('agendaControllers',['appData'])
             }
 
 
-            function watcher(){
 
-                var i, stack = $scope.listeners.time[ $scope.now.date.getTime() ];
-
-                //if there are handler stack matches now time
-                if( stack ){
-                    for(i in stack){
-                        if( stack.hasOwnProperty(i) ){
-                            spark.handlers[stack[i]]();
-                        }
-                    }
-                }
-            }
 
             //Refresh spark status
             function refreshSpark(){
 
                 //make sure spark info is fetched
-                if(spark.deviceInfo["Spark Cloud"]){
+                if( spark.deviceInfo["Spark Cloud"] ){
 
                     spark.updateVars();
                 }
+
+                //if( $scope.listeners.device ) watcher.device();
             }
 
 
@@ -236,8 +248,14 @@ angular.module('agendaControllers',['appData'])
 
                 //refresh the clock model
                 $scope.now = time.getHMS(now);
+                $scope.now.date = now;
+
 
                 if($scope.meeting.status === 'now'){
+                    if( $scope.startInit === false ){
+                        dom.panel.off();
+                        $scope.startInit = true;
+                    }
 
                     //refresh meeting progress bar's percentage
                     $scope.meeting.progressPercentage = time.percentage(
@@ -254,12 +272,14 @@ angular.module('agendaControllers',['appData'])
 
 
                 if($scope.meeting.status === 'uninitiated')
-                //refresh panel message with how long later will the meeting begin
+
+                    //refresh panel message with how long later will the meeting begin
                     $scope.panelMessage = app_data.panel.meeting_messages[0] + ' after ' +
-                        time.duration( $scope.now.date, $scope.meeting.startDate ).join( ':' );
+                        $filter('x2')(time.duration( now, $scope.meeting.startDate )[0]) + ':' +
+                        $filter('x2')(time.duration( now, $scope.meeting.startDate )[1]) + ':' +
+                        $filter('x2')(time.duration( now, $scope.meeting.startDate )[2]);
 
-
-                $scope.now.date = now;
+                if($scope.listeners.time) watcher.time();
             }
 
 

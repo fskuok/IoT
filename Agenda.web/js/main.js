@@ -7,16 +7,17 @@
 
 angular.module('agendaApp', ['appData', 'agendaControllers'])
 
+    /* Filters */
 
-
+    //@expression: { Object }
     //used for panel, filter properties that are not shown
     .filter('ignoreKey', function(){
-        var a = ',';
+        var separateSign = ',';
 
         return function(input, ignoredKey){
             var newObj = {};
             for(var key in input){
-                if( input.hasOwnProperty(key) && !(ignoredKey).match(key+a) ){
+                if( input.hasOwnProperty(key) && !( ignoredKey ).match( key + separateSign ) ){
                     newObj[key] = input[key];
                 }
             }
@@ -24,11 +25,14 @@ angular.module('agendaApp', ['appData', 'agendaControllers'])
         }
     })
 
+    //@expression: string
     //convert 1 digit number into 2 digits string
     .filter('x2', function(){
         return function(a){ return +a < 10 ? '0' + (+a) : a + '';}
     })
 
+
+    //@expression: string
     //put space between camel case words
     .filter('spaceCamelCase', function(){
         return function(input){
@@ -42,6 +46,9 @@ angular.module('agendaApp', ['appData', 'agendaControllers'])
         }
     })
 
+
+
+    /* Services */
 
     //using tabletop.js (https://github.com/jsoma/tabletop)
     //to fetch data form google spreadsheet
@@ -60,6 +67,15 @@ angular.module('agendaApp', ['appData', 'agendaControllers'])
         return {
             get: get
         }
+    })
+
+
+    //using loadImage.js
+
+    .factory('loadImg', function(){
+        document.getElementById('file-input').onchange = function (e) {
+            var loadingImage = loadImage('http://dailydropcap.com/images/A-6.jpg');
+        };
     })
 
 
@@ -85,6 +101,9 @@ angular.module('agendaApp', ['appData', 'agendaControllers'])
                     },
                     turnOffProjector: function () {
                         spark.deviceInfo[ "Lights / Projector / Whiteboard" ].projectorOn.call('0')
+                    },
+                    brewCoffee: function(a){
+                        spark.deviceInfo["Coffee Maker"].brewCoffee.call(a || '1');
                     }
                 }
             };
@@ -169,7 +188,6 @@ angular.module('agendaApp', ['appData', 'agendaControllers'])
             $http
                 .post( _getUrl(spark.deviceInfo[ deviceName ].key, fnName), {"args": args} )
                 .success( function(data){
-                    console.log(data);
                     if(onSuccess) onSuccess(data);
                 } );
         }
@@ -242,7 +260,7 @@ angular.module('agendaApp', ['appData', 'agendaControllers'])
                                 autoUpdate: false,
                                 callbackCheck: undefined,
                                 updateTimestamp: undefined,
-                                get: _varGetter( data[ i ].name, data[ i ][ 'var'+j++ ])
+                                get: _varGetter( data[ i ].name, data[ i ][ 'var'+ j++ ])
                             };
                         else break;
                     }
@@ -256,7 +274,7 @@ angular.module('agendaApp', ['appData', 'agendaControllers'])
                                 type : 'function',
                                 description: data[ i ][ 'fn'+ j + 'description' ],
                                 value : undefined,
-                                call: _fnCaller( data[ i ].name, data[ i][ 'fn'+j++ ])
+                                call: _fnCaller( data[ i ].name, data[ i][ 'fn'+ j++ ])
                             };
                         else break;
                     }

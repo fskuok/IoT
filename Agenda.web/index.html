@@ -6,10 +6,11 @@
 
     <!--javaScripts-->
 	<script src="bower_components/angular/angular.js"></script>
+    <script src="js/load-image.all.min.js"></script>
+    <script src="js/tabletop.js"></script>
     <script src="js/data.js"></script>
     <script src="js/controller.js"></script>
 	<script src="js/main.js"></script>
-	<script src="js/tabletop.js"></script>
 
     <!--fonts-->
 
@@ -20,26 +21,26 @@
 		<aside class="left">
 			<div class="above">
 				<p class="topic"></p>
-				<p class="date">{{date()}}</p>
+				<p class="date">{{ date() }}</p>
 				<p class="clock">
-					<span class="hour">{{now.h | x2}}</span> :
-					<span class="min">{{now.m | x2}}</span> :
-					<span class="sec">{{now.s | x2}}</span>
+					<span class="hour">{{ now.h | x2 }}</span> :
+					<span class="min">{{ now.m | x2 }}</span> :
+					<span class="sec">{{ now.s | x2 }}</span>
 				</p>
 			</div>
 			
 			<div class="ongoing">
                 <div class="remaining">
                     <p class="tag">Remains</p>
-                    <span class="hour">{{nowEvent.remaining.h || '00' | x2}}</span> :
-                    <span class="min">{{nowEvent.remaining.m || '00' | x2}}</span> :
-                    <span class="min">{{nowEvent.remaining.s || '00' | x2}}</span>
+                    <span class="hour">{{ nowEvent.remaining.h || '00' | x2 }}</span> :
+                    <span class="min">{{ nowEvent.remaining.m || '00' | x2 }}</span> :
+                    <span class="min">{{ nowEvent.remaining.s || '00' | x2 }}</span>
                 </div>
 			</div>
 
 			<div class="below">
                 <p class="tag">Meeting progress</p>
-				<div class="progressBar"><div class="progress" style="width: {{meeting.progressPercentage}}%"></div></div>
+				<div class="progressBar"><div class="progress" style="width: {{meeting.progressPercentage || 0}}%"></div></div>
 			</div>
 
 
@@ -47,7 +48,7 @@
 
         <div class="events">
 
-            <div class="event {{isOn(event.start, event.end, $index)}}" ng-repeat="event in events">
+            <div class="event {{ isOn(event.start, event.end, $index) }}" ng-repeat="event in events">
 
                 <!--for future use in case-->
                 <div class="left">
@@ -58,20 +59,20 @@
                 <div class="right">
                     <div class="time">
                         <span class="icon time"></span>
-                        <span class="start">{{event.start}}</span>
-                        <span class="end">{{event.end}}</span>
-                        <span>{{ duration(event.start, event.end).slice(0, 2).join('H') + 'M' }}</span>
+                        <span class="start">{{ event.start }}</span>
+                        <span class="end">{{ event.end }}</span>
+                        <span>{{ duration( event.start, event.end ).slice(0, 2).join('H') + 'M' }}</span>
 
                     </div>
 
                     <p class="topic">
-                        <span class="icon {{event.type}}"></span>
-                        {{event.topic}}
+                        <span class="icon {{ event.type }}"></span>
+                        {{ event.topic }}
                     </p>
 
                     <p class="people">
                         <span class="icon people"></span>
-                        {{event.people}}
+                        {{ event.people }}
                     </p>
 
                     <figure class="circle"></figure>
@@ -83,25 +84,26 @@
 
         <section class="panel">
 
-            <h2>{{panelMessage}}</h2>
+            <h2>{{ panelMessage }}</h2>
 
-            <div class="device {{parseStatus(value.status.value)}}" ng-repeat="(name, value) in devices | ignoreKey: deviceIgnoreList">
+            <div class="device {{ parseStatus( value.status.value ) }}"
+                 ng-repeat="(name, value) in devices | ignoreKey: deviceIgnoreList">
 
                 <div class="header">
                     <h5>{{name}}</h5><input type="checkbox" ng-model="value.status.autoUpdate"/>
                 </div>
 
 
-                <div ng-repeat="(varName, value) in value | ignoreKey: deviceVarIgnoreList " class="{{value.type}}">
+                <div ng-repeat="(varName, value) in value | ignoreKey: deviceVarIgnoreList " class="{{ value.type }}">
 
                     <input type="checkbox" ng-model="value.autoUpdate" ng-show="value.type === 'variable'"/>
                     <input type="text" ng-model="args" ng-show="value.type === 'function'"/>
-                    <button ng-show="value.type === 'function'" ng-click="triggerFn(name, varName, args)">Call</button>
+                    <button ng-show="value.type === 'function'" ng-click=" triggerFn(name, varName, args) ">Call</button>
 
 
-                    <span class="value {{value.autoUpdate}}">{{value.value || "N/A"}}</span>
-                    <span class="name">{{varName | spaceCamelCase}}</span>
-                    <span class="description">{{value.description}}</span>
+                    <span class="value {{ value.autoUpdate }}">{{ value.value || "N/A" }}</span>
+                    <span class="name">{{ varName | spaceCamelCase }}</span>
+                    <span class="description">{{ value.description }}</span>
 
 
                 </div>
