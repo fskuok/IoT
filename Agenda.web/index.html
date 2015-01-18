@@ -32,9 +32,9 @@
 			<div class="ongoing">
                 <div class="remaining">
                     <p class="tag">Remains</p>
-                    <span class="hour">{{ nowEvent.remaining.h || '00' | x2 }}</span> :
-                    <span class="min">{{ nowEvent.remaining.m || '00' | x2 }}</span> :
-                    <span class="min">{{ nowEvent.remaining.s || '00' | x2 }}</span>
+                    <span class="hour">{{ nowEvent.remaining.h > 0 ? nowEvent.remaining.h : '00' | x2 }}</span> :
+                    <span class="min">{{ nowEvent.remaining.m > 0 ? nowEvent.remaining.m : '00' | x2 }}</span> :
+                    <span class="min">{{ nowEvent.remaining.s > 0 ? nowEvent.remaining.s : '00' | x2 }}</span>
                 </div>
 			</div>
 
