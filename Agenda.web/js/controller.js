@@ -194,6 +194,7 @@ angular.module('agendaControllers',['appData'])
                 refreshSpark();
             }
 
+
             function adjustPanel(){
                 switch ( $scope.isOn(  $scope.meeting.startDate, $scope.meeting.endDate )){
 
@@ -315,7 +316,6 @@ angular.module('agendaControllers',['appData'])
 
                 }
             }
-
 
             init();
         }]

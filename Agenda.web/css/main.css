@@ -162,7 +162,9 @@ section {
     position: relative;
     top: 300px;
     height: 100%;
-    width: 100%; }
+    width: 100%;
+    transition: top 1s;
+    -webkit-transition: top 1s; }
     section div.events div.event {
       position: relative;
       height: 120px;
@@ -194,7 +196,7 @@ section {
         width: 76%;
         text-align: center; }
       section div.events div.event:first-of-type div.right:before {
-        content: "- Began of the Meeting -";
+        content: "- Begining of the Meeting -";
         top: -24px; }
       section div.events div.event:last-of-type div.right:after {
         content: "- End of the Meeting -";
